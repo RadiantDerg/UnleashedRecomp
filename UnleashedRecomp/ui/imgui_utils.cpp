@@ -333,6 +333,23 @@ void DrawTextWithShadow(const ImFont* font, float fontSize, const ImVec2& pos, I
     drawList->AddText(font, fontSize, pos, colour, text, nullptr);
 }
 
+void DrawTextWithShadow(ImDrawList* drawList, const ImFont* font, float fontSize, const ImVec2& pos, ImU32 colour, const char* text, float offset, float radius, ImU32 shadowColour)
+{
+    offset = Scale(offset);
+
+    // Original 4:3 has thicker text shadows.
+    if (Config::AspectRatio == EAspectRatio::OriginalNarrow)
+    {
+        radius *= 1.5f;
+    }
+
+    SetOutline(radius);
+    drawList->AddText(font, fontSize, { pos.x + offset, pos.y + offset }, shadowColour, text);
+    ResetOutline();
+
+    drawList->AddText(font, fontSize, pos, colour, text, nullptr);
+}
+
 float CalcWidestTextSize(const ImFont* font, float fontSize, std::span<std::string> strs)
 {
     auto result = 0.0f;

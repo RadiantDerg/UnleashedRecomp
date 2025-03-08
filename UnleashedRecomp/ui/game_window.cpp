@@ -12,6 +12,11 @@
 #include <shellscalingapi.h>
 #endif
 
+#include <res/images/reddog/mouse_cursor.bmp.h>
+#include <res/images/reddog/mouse_cursor_h.bmp.h>
+#include <res/images/reddog/mouse_cursor_slant_l.bmp.h>
+#include <res/images/reddog/mouse_cursor_slant_r.bmp.h>
+#include <res/images/reddog/mouse_cursor_v.bmp.h>
 #include <res/images/game_icon.bmp.h>
 #include <res/images/game_icon_night.bmp.h>
 
@@ -277,6 +282,70 @@ void GameWindow::SetIcon(bool isNight)
         SetIcon(g_game_icon, sizeof(g_game_icon));
     }
 }
+
+void GameWindow::SetCursor(ECursorType cursorType)
+{
+    if (s_currentCursor == cursorType)
+        return;
+
+    s_currentCursor = cursorType;
+
+    uint8_t* pBitmapData;
+    size_t bitmapSize;
+    int x, y;
+
+    switch (cursorType)
+    {
+    case ECursorType::DebugDefault:
+        pBitmapData = g_mouse_cursor;
+        bitmapSize = sizeof(g_mouse_cursor);
+        x = 0;
+        y = 0;
+        break;
+
+    case ECursorType::DebugHorizontal:
+        pBitmapData = g_mouse_cursor_h;
+        bitmapSize = sizeof(g_mouse_cursor_h);
+        x = 15;
+        y = 15;
+        break;
+
+    case ECursorType::DebugVertical:
+        pBitmapData = g_mouse_cursor_v;
+        bitmapSize = sizeof(g_mouse_cursor_v);
+        x = 15;
+        y = 15;
+        break;
+
+    case ECursorType::DebugLeftDiagonal:
+        pBitmapData = g_mouse_cursor_slant_l;
+        bitmapSize = sizeof(g_mouse_cursor_slant_l);
+        x = 16;
+        y = 15;
+        break;
+
+    case ECursorType::DebugRightDiagonal:
+        pBitmapData = g_mouse_cursor_slant_r;
+        bitmapSize = sizeof(g_mouse_cursor_slant_r);
+        x = 16;
+        y = 15;
+        break;
+
+    default:
+        SDL_SetCursor(SDL_GetDefaultCursor());
+        return;
+    }
+
+    if (auto surface = GetIconSurface(pBitmapData, bitmapSize))
+    {
+        if (auto cursor = SDL_CreateColorCursor(surface, x, y))
+        {
+            SDL_SetCursor(cursor);
+            SDL_FreeSurface(surface);
+        }
+    }
+}
+
 
 const char* GameWindow::GetTitle()
 {

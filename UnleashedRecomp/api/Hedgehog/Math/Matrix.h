@@ -4,7 +4,7 @@
 
 namespace Hedgehog::Math
 {
-    class CMatrix
+    class CMatrix // Eigen::Affine3f
     {
     public:
         be<float> m_M00;
@@ -24,4 +24,13 @@ namespace Hedgehog::Math
         be<float> m_M32;
         be<float> m_M33;
     };
+
+    class CMatrix44
+    {
+    public:
+        be<float> data[16]; // Eigen::Matrix4f
+    };
+
+    //SWA_ASSERT_SIZEOF(CMatrix, 0x40);
+    //SWA_ASSERT_SIZEOF(CMatrix44, 0x40);
 }

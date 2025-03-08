@@ -9,6 +9,17 @@
 #define MIN_WIDTH 640
 #define MIN_HEIGHT 480
 
+enum class ECursorType
+{
+    Default,
+    DebugDefault,
+    DebugHorizontal,
+    DebugVertical,
+    DebugLeftDiagonal,
+    DebugRightDiagonal
+};
+
+
 class GameWindow
 {
 public:
@@ -24,10 +35,12 @@ public:
     static inline bool s_isIconNight;
     static inline bool s_isFullscreenCursorVisible;
     static inline bool s_isChangingDisplay;
+    static inline ECursorType s_currentCursor;
 
     static SDL_Surface* GetIconSurface(void* pIconBmp, size_t iconSize);
     static void SetIcon(void* pIconBmp, size_t iconSize);
     static void SetIcon(bool isNight = false);
+    static void SetCursor(ECursorType cursorType = ECursorType::Default);
     static const char* GetTitle();
     static void SetTitle(const char* title = nullptr);
     static void SetTitleBarColour();

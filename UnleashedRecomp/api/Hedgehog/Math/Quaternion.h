@@ -4,7 +4,7 @@
 
 namespace Hedgehog::Math
 {
-    class CQuaternion
+    class CQuaternion //Eigen::Quaternionf;
     {
     public:
         be<float> X;
@@ -12,4 +12,6 @@ namespace Hedgehog::Math
         be<float> Z;
         be<float> W;
     };
+
+    SWA_ASSERT_SIZEOF(CQuaternion, 0x10);
 }

@@ -17,6 +17,7 @@
 #include <res/font/im_font_atlas.dds.h>
 #include <shader/shader_cache.h>
 #include <SWA.h>
+#include <ui/reddog/reddog_manager.h>
 #include <ui/achievement_menu.h>
 #include <ui/achievement_overlay.h>
 #include <ui/button_guide.h>
@@ -1373,6 +1374,13 @@ static void CreateImGuiBackend()
     OptionsMenu::Init();
     InstallerWizard::Init();
 
+#if !_DEBUG
+    if (Config::Debug)
+#endif
+    {
+        Reddog::Manager::Init();
+    }
+
     ImGui_ImplSDL2_InitForOther(GameWindow::s_pWindow);
 
 #ifdef ENABLE_IM_FONT_ATLAS_SNAPSHOT
@@ -2468,6 +2476,13 @@ static void DrawImGui()
     ButtonGuide::Draw();
     Fader::Draw();
     BlackBar::Draw();
+
+#if !_DEBUG
+    if (Config::Debug)
+#endif
+    {
+        Reddog::Manager::Draw();
+    }
 
     assert(ImGui::GetBackgroundDrawList()->_ClipRectStack.Size == 1 && "Some clip rects were not removed from the stack!");
 
