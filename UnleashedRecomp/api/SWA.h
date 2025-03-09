@@ -15,6 +15,7 @@
 #include "CSD/Manager/csdmSceneObserver.h"
 #include "CSD/Manager/csdmSubjectBase.h"
 #include "CSD/Platform/csdTexList.h"
+#include "Hedgehog/Base/Container/hhList.h"
 #include "Hedgehog/Base/Container/hhMap.h"
 #include "Hedgehog/Base/Container/hhVector.h"
 #include "Hedgehog/Base/System/hhAllocator.h"
@@ -130,8 +131,7 @@
 #include "SWA/System/PadState.h"
 #include "SWA/System/StageManager.h"
 #include "SWA/System/World.h"
-#include "boost/smart_ptr/make_shared_object.h"
-#include "boost/smart_ptr/shared_ptr.h"
-
 #include "SWAFromMapping/GameDocument.h"
 #include "SWAFromMapping/Tool/ParameterEditor2nd/ParameterEditor2nd.h"
+#include "boost/smart_ptr/make_shared_object.h"
+#include "boost/smart_ptr/shared_ptr.h"
