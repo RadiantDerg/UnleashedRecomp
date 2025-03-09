@@ -132,3 +132,6 @@
 #include "SWA/System/World.h"
 #include "boost/smart_ptr/make_shared_object.h"
 #include "boost/smart_ptr/shared_ptr.h"
+
+#include "FromMapping/GameDocument.h"
+#include "FromMapping/Tool/ParameterEditor2nd/ParameterEditor2nd.h"
