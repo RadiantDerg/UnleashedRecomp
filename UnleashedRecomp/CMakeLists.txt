@@ -155,6 +155,7 @@ set(UNLEASHED_RECOMP_UI_CXX_SOURCES
     "ui/reddog/reddog_window.cpp"
     "ui/reddog/windows/exports_window.cpp"
     "ui/reddog/windows/welcome_window.cpp"
+    "ui/reddog/windows/ParamEditorWindowTest.cpp"
 
     "ui/achievement_menu.cpp"
     "ui/achievement_overlay.cpp"
