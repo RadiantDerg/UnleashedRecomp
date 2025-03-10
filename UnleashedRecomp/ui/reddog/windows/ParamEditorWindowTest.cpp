@@ -28,7 +28,6 @@ void ParamEditorWindowTest::Draw()
         
         for (auto e : list)
         {
-
             if (ImGui::CollapsingHeader(GetString(e->m_Name.c_str()).c_str()))
             {
                 // Group nodes

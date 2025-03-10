@@ -54,6 +54,7 @@
 #include "Hedgehog/Sparkle/hhParticleMaterial.h"
 #include "Hedgehog/Universe/Engine/hhMessageActor.h"
 #include "Hedgehog/Universe/Engine/hhMessageProcess.h"
+#include "Hedgehog/Universe/Engine/hhStateMachine.h"
 #include "Hedgehog/Universe/Engine/hhStateMachineBase.h"
 #include "Hedgehog/Universe/Engine/hhStateMachineMessageReceiver.h"
 #include "Hedgehog/Universe/Engine/hhUpdateInfo.h"

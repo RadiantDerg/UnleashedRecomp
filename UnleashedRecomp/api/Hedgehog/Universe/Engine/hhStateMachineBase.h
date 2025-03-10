@@ -7,6 +7,9 @@
 
 namespace Hedgehog::Universe
 {
+        
+    
+
     class CStateMachineBase : public IStateMachineMessageReceiver, public Base::CObject
     {
     public:
@@ -23,10 +26,14 @@ namespace Hedgehog::Universe
 
             template<typename T>
             T* GetContextBase() const;
+
         };
+        boost::shared_ptr<CStateBase> ChangeState(Base::CSharedString in_Name, const int in_Priority = 0, const float in_Time = 0, const bool in_Flag = false);
 
         SWA_INSERT_PADDING(0x60);
     };
+
+
 }
 
 #include <Hedgehog/Universe/Engine/hhStateMachineBase.inl>
