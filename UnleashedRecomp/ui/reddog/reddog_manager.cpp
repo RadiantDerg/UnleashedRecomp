@@ -19,6 +19,8 @@ static bool g_isReddogToggled = false;
 static bool g_isWindowListVisible = false;
 
 static Reddog::WindowList g_window;
+
+
 void Reddog::WindowList::Draw()
 {
     if (Begin())
@@ -59,7 +61,8 @@ void Reddog::Manager::Init()
 
 void Reddog::Manager::Draw()
 {
-    bool isReddogToggled = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_F1] != 0;
+    // Activate Debug Button on L Shift + F1
+    bool isReddogToggled = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LSHIFT] != 0 && SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_F1] != 0;
 
     if (!g_isReddogToggled && isReddogToggled)
     {
@@ -133,22 +136,14 @@ void Reddog::Manager::Draw()
         if (pWindowList->ImWindow)
         {
             if (debugIconMin.x > res.x / 2)
-            {
                 pWindowList->ImWindow->Pos.x = debugIconMax.x - pWindowList->ImWindow->Size.x;
-            }
             else
-            {
                 pWindowList->ImWindow->Pos.x = debugIconMin.x;
-            }
 
             if (debugIconMin.y > res.y / 2)
-            {
                 pWindowList->ImWindow->Pos.y = debugIconMin.y - pWindowList->ImWindow->Size.y;
-            }
             else
-            {
                 pWindowList->ImWindow->Pos.y = debugIconMin.y + debugIconSize;
-            }
         }
     }
 

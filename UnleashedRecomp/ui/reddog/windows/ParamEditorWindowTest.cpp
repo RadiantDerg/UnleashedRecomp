@@ -2,7 +2,10 @@
 #include <ui/reddog/reddog_controls.h>
 #include <user/config.h>
 #include <SWA.h>
+
+
 static ParamEditorWindowTest g_window;
+
 static std::string GetString(const char* value)
 {
     if (!value || value == (const char*)0x13E0DC0)
@@ -16,7 +19,10 @@ static std::string GetString(const char* value)
 
     return std::string(multiByte);
 }
+
 const char* __fmt__ = "[%s]    %s    \"%s\"";
+
+
 void ParamEditorWindowTest::Draw()
 {
     if (Begin())

@@ -4,5 +4,5 @@
 
 void Registry::Save()
 {
-    os::registry::WriteValue(STR(ExecutableFilePath), os::process::GetExecutablePath());
+    //os::registry::WriteValue(STR(ExecutableFilePath), os::process::GetExecutablePath());
 }

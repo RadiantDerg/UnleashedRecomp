@@ -200,11 +200,11 @@ namespace Reddog
         float deltaTime = io.DeltaTime;
         auto drawList = ImGui::GetBackgroundDrawList();
 
-        DrawText2D({ ImVec2(Scale(50), Scale(300)), "TEST1 NO SHADOW", 0, 2, 0xFF37C800, eDrawTextFlags_NoShadow });
+        /*DrawText2D({ ImVec2(Scale(50), Scale(300)), "TEST1 NO SHADOW", 0, 2, 0xFF37C800, eDrawTextFlags_NoShadow });
         DrawText2D({ ImVec2(Scale(50), Scale(325)), "TEST2 OVERLAY", 0, 2, 0xFF37C800, eDrawTextFlags_Overlay });
         DrawText2D({ ImVec2(Scale(50), Scale(350)), "TEST3 SCALE", 0, 5, 0xFF37C800 });
         DrawTextLog("TEST1 NORMAL");
-        DrawTextLog("TEST2 COLORED", 0, 0xFF37C800);
+        DrawTextLog("TEST2 COLORED", 0, 0xFF37C800);*/
 
         auto stats = fmt::format("== Stats ==\nLines: {}\nTexts: {}\nLogs: {}", ms_LineList.size(), ms_FreeTextList.size(), ms_LogTextList.size());
         SDrawText text = { ImVec2(Scale(40), Scale(75)), stats, 0, 0.75f };

@@ -2,6 +2,15 @@
 
 #define REDDOG_IMGUI_FLAGS ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground
 
+#pragma region RGBA f32 Colors
+#define GUI_TEXTCOLOR_DEFAULT	{1.00f, 1.00f, 1.00f, 1.00f} // White
+#define GUI_TEXTCOLOR_COMMENT	{0.34f, 0.65f, 0.29f, 1.00f} // VS Comment Green 
+#define GUI_TEXTCOLOR_INFO		{0.00f, 1.00f, 0.00f, 1.00f} // Light Green
+#define GUI_TEXTCOLOR_NOTICE	{1.00f, 0.80f, 0.00f, 1.00f} // Yellow
+#define GUI_TEXTCOLOR_WARN		{1.00f, 0.50f, 0.00f, 1.00f} // Orange
+#define GUI_TEXTCOLOR_ERROR		{1.00f, 0.00f, 0.00f, 1.00f} // Red
+#pragma endregion
+
 namespace Reddog
 {
     enum EWindowFlags : uint32_t

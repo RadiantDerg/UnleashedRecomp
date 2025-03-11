@@ -8,7 +8,7 @@ public:
     ParamEditorWindowTest() : Window()
     {
         Name = "Parameter Editor";
-        Flags = Reddog::eWindowFlags_NoResize;
+        Flags = Reddog::eWindowFlags_None;
     }
 
     void Draw() override;

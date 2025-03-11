@@ -4,6 +4,7 @@
 #include <gpu/video.h>
 #include "camera_patches.h"
 #include "aspect_ratio_patches.h"
+#include <ui/reddog/debug_draw.h>
 
 void CameraAspectRatioMidAsmHook(PPCRegister& r30, PPCRegister& r31)
 {
