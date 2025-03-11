@@ -9,7 +9,8 @@
 void CameraAspectRatioMidAsmHook(PPCRegister& r30, PPCRegister& r31)
 {
     r30.u32 = 0;
-
+    // REMOVE EVENTUALLY
+    Reddog::DebugDraw::ms_Camera = (SWA::CCamera2*)g_memory.Translate(r31.u32);
     auto camera = (SWA::CCamera*)g_memory.Translate(r31.u32);
     // Dynamically adjust horizontal aspect ratio to window dimensions.
     camera->m_HorzAspectRatio = g_aspectRatio;

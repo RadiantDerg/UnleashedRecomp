@@ -28,23 +28,23 @@ namespace Reddog
     {
         auto& res = ImGui::GetIO().DisplaySize;
 
-        //const auto camera = SWA::CGameDocument::GetInstance()->GetWorld()->GetCamera();
-        //Hedgehog::Math::CVector4 ndc = camera->m_MyCamera.m_View * Hedgehog::Math::CVector4(in_rVec.x, in_rVec.y, in_rVec.z, 1.0f);
-        //ndc = camera->m_MyCamera.m_Projection * ndc;
+        const auto camera = Reddog::DebugDraw::ms_Camera;
+        Hedgehog::Math::CVector4 ndc = camera->m_MyCamera.m_View * Hedgehog::Math::CVector4(in_rPosition.x, in_rPosition.y, in_rPosition.z, 1.0f);
+        ndc = camera->m_MyCamera.m_Projection * ndc;
 
-        //if (ndc.W > 0.0f) // Check if given position is in front of the camera
-        //{
-        //    // normalize
-        //    if (ndc.W != 0.0f)
-        //        ndc /= ndc.W;
+        if (ndc.W > 0.0f) // Check if given position is in front of the camera
+        {
+            // normalize
+            if (ndc.W != 0.0f)
+                ndc /= ndc.W;
 
-        //    const ImVec2 screen_pos = {
-        //        res.x / 2 * (1 - -ndc.X), // x
-        //        res.y / 2 * (1 - ndc.Y)  // y
-        //    };
+            const ImVec2 screen_pos = {
+                res.x / 2 * (1 - -ndc.X), // x
+                res.y / 2 * (1 - ndc.Y)  // y
+            };
 
-        //    return screen_pos; // Return screen coordinates
-        //}
+            return screen_pos; // Return screen coordinates
+        }
 
         return { -1, -1 }; // Return invalid
     }

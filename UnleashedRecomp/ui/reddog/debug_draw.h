@@ -1,6 +1,9 @@
 #pragma once
 
-
+namespace SWA 
+{
+    class CCamera2;
+}
 namespace Reddog
 {
     struct Vector3
@@ -43,6 +46,7 @@ namespace Reddog
     class DebugDraw
     {
     public:
+        static inline SWA::CCamera2* ms_Camera;
         static inline bool ms_IsRendering = false;
 
         static inline std::vector<SDrawLine> ms_LineList = {};
