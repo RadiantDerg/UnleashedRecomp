@@ -49,9 +49,10 @@ void Reddog::Manager::Init()
     //builder.AddText("•※└");                                 // Add missing glyphs
     //builder.BuildRanges(&ranges);
 
-    //ms_pFont = fontAtlas->AddFontFromFileTTF("micross.ttf", 24.0f, nullptr, ranges.Data);
+    //ms_pFont = fontAtlas->AddFontFromFileTTF("xarialuni.ttf", 24.0f, nullptr, ranges.Data);
     //assert(ms_pFont != nullptr);
-    ms_pFont = ImFontAtlasSnapshot::GetFont("FOT-NewRodinPro-DB");
+
+    ms_pFont = ImFontAtlasSnapshot::GetFont("xarialuni.ttf");
     
     g_upDebugIcon = LoadTexture(g_debug_icon, sizeof(g_debug_icon));
 

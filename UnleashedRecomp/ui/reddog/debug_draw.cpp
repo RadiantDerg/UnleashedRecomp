@@ -70,7 +70,6 @@ namespace Reddog
 
             clipPos.x /= clipPos.w;
             clipPos.y /= clipPos.w;
-            clipPos.z /= clipPos.w;
 
             float screenX = (clipPos.x * 0.5f + 0.5f) * res.x; float screenY = (clipPos.y * -0.5f + 0.5f) * res.y;
 
