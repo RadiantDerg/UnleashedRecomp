@@ -249,7 +249,7 @@ PPC_FUNC(sub_825A0FB0)
 PPC_FUNC_IMPL(__imp__sub_822CAC88);
 PPC_FUNC(sub_822CAC88)
 {
-    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 3);
+    //Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 3);
     __imp__sub_822CAC88(ctx, base);
 }
 
@@ -257,7 +257,7 @@ PPC_FUNC(sub_822CAC88)
 PPC_FUNC_IMPL(__imp__sub_822CB5F8);
 PPC_FUNC(sub_822CB5F8)
 {
-    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 3);
+    //Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 3);
     __imp__sub_822CB5F8(ctx, base);
 }
 
@@ -265,6 +265,55 @@ PPC_FUNC(sub_822CB5F8)
 PPC_FUNC_IMPL(__imp__sub_822CAAC8);
 PPC_FUNC(sub_822CAAC8)
 {
-    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 3);
+    //Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 3);
     __imp__sub_822CAAC8(ctx, base);
+}
+struct Test 
+{
+    be<int> dword0;
+    be<int> dword4;
+    be<int> test1;
+    be<int> test2;
+    be<int> test3;
+    be<int> test4;
+    be<int> Length;
+    be<int> dword18;
+    be<int> dword19;
+    be<int> dword20;
+};
+// SetEditor Text thing #3
+PPC_FUNC_IMPL(__imp__sub_822CA7C8);
+PPC_FUNC(sub_822CA7C8)
+{
+    Test* test = (Test*)(base + ctx.r3.u32);
+    if (test != nullptr)
+    {
+
+        Test g = *test;
+        auto f = g.dword4;
+        auto h = f;
+    }
+    __imp__sub_822CA7C8(ctx, base);
+
+}
+PPC_FUNC_IMPL(__imp__sub_82E01730);
+PPC_FUNC(sub_82E01730)
+{
+    Hedgehog::Base::CSharedString* test2 = (Hedgehog::Base::CSharedString*)(base + ctx.r4.u32);
+
+    Test* test3 = (Test*)(base + ctx.r3.u32);
+    __imp__sub_82E01730(ctx, base);
+    Test* test = (Test*)(base + ctx.r3.u32);
+    
+    if (test != nullptr)
+    {
+        if(test2 != nullptr)
+        if (test2->c_str() != nullptr)
+        {
+            Reddog::DebugDraw::DrawTextLog(test2->c_str(), 0);
+        }
+        Test g = *test;
+        auto f = g.dword4;
+        auto h = f;
+    }
 }
