@@ -1,9 +1,10 @@
 #pragma once
 
-namespace SWA 
+namespace SWA
 {
     class CCamera2;
 }
+
 namespace Reddog
 {
     struct Vector3
@@ -11,6 +12,13 @@ namespace Reddog
         float x, y, z;
         constexpr Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
         constexpr Vector3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
+    };
+
+    struct Vector4
+    {
+        float x, y, z, w;
+        constexpr Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
+        constexpr Vector4(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) {}
     };
 
     enum SDrawTextFlags : uint8_t
@@ -46,7 +54,8 @@ namespace Reddog
     class DebugDraw
     {
     public:
-        static inline SWA::CCamera2* ms_Camera;
+        static inline SWA::CCamera2* ms_pCamera = 0;
+
         static inline bool ms_IsRendering = false;
 
         static inline std::vector<SDrawLine> ms_LineList = {};

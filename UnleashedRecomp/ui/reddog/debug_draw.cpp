@@ -24,26 +24,67 @@ namespace Reddog
         return result;
     }
 
-    static ImVec2 GetNDCCoordinate(const Vector3& in_rPosition)
+    Hedgehog::Math::CVector4 operator* (const Hedgehog::Math::CMatrix& m33, const Hedgehog::Math::CVector4& v4)
+    {
+        return {
+            m33.m_M00 * v4.X + m33.m_M01 * v4.Y + m33.m_M02 * v4.Z, // Row 1
+            m33.m_M10 * v4.X + m33.m_M11 * v4.Y + m33.m_M12 * v4.Z, // Row 2
+            m33.m_M20 * v4.X + m33.m_M21 * v4.Y + m33.m_M22 * v4.Z, // Row 3
+            v4.W 
+            };
+    }
+
+    Hedgehog::Math::CVector4 operator* (const Hedgehog::Math::CMatrix44& m44, const Hedgehog::Math::CVector4& v4)
+    {
+        return {
+            m44.data[0] * v4.X + m44.data[1] * v4.Y + m44.data[2] * v4.Z + m44.data[3] * v4.W,      // Row 1
+            m44.data[4] * v4.X + m44.data[5] * v4.Y + m44.data[6] * v4.Z + m44.data[7] * v4.W,      // Row 2
+            m44.data[8] * v4.X + m44.data[9] * v4.Y + m44.data[10] * v4.Z + m44.data[11] * v4.W,    // Row 3
+            m44.data[12] * v4.X + m44.data[13] * v4.Y + m44.data[14] * v4.Z + m44.data[15] * v4.W   // Row 4
+        };
+    }
+
+    ImVec2 GetNDCCoordinate(const Vector3& in_rPosition)
     {
         auto& res = ImGui::GetIO().DisplaySize;
 
-        const auto camera = Reddog::DebugDraw::ms_Camera;
-        Hedgehog::Math::CVector4 ndc = camera->m_MyCamera.m_View * Hedgehog::Math::CVector4(in_rPosition.x, in_rPosition.y, in_rPosition.z, 1.0f);
-        ndc = camera->m_MyCamera.m_Projection * ndc;
-
-        if (ndc.W > 0.0f) // Check if given position is in front of the camera
+        if (Reddog::DebugDraw::ms_pCamera != 0)
         {
-            // normalize
-            if (ndc.W != 0.0f)
-                ndc /= ndc.W;
+            // Reference
+            //const auto camera = SWA::CGameDocument::GetInstance()->GetWorld()->GetCamera();
+            //Hedgehog::Math::CVector4 ndc = camera->m_MyCamera.m_View * Hedgehog::Math::CVector4(in_rVec.x, in_rVec.y, in_rVec.z, 1.0f);
+            //ndc = camera->m_MyCamera.m_Projection * ndc;
 
-            const ImVec2 screen_pos = {
-                res.x / 2 * (1 - -ndc.X), // x
-                res.y / 2 * (1 - ndc.Y)  // y
+            const auto camera = Reddog::DebugDraw::ms_pCamera;
+
+            // Expand matrix to 4x4
+            Hedgehog::Math::CMatrix44 test {
+                camera->m_MyCamera.m_View.m_M00, camera->m_MyCamera.m_View.m_M01, camera->m_MyCamera.m_View.m_M02, 0.0f,
+                camera->m_MyCamera.m_View.m_M10, camera->m_MyCamera.m_View.m_M11, camera->m_MyCamera.m_View.m_M12, 0.0f,
+                camera->m_MyCamera.m_View.m_M20, camera->m_MyCamera.m_View.m_M21, camera->m_MyCamera.m_View.m_M22, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f
             };
 
-            return screen_pos; // Return screen coordinates
+            // Multiply
+            Hedgehog::Math::CVector4 bruh(test * Hedgehog::Math::CVector4(in_rPosition.x, in_rPosition.y, in_rPosition.z, 1.0f));
+
+            // I think it all goes downhill from here...
+            Hedgehog::Math::CVector4 ndc = camera->m_MyCamera.m_Projection * bruh;
+
+
+            if (ndc.W > 0.0f) // Check if given position is in front of the camera
+            {
+                // normalize
+                if (ndc.W != 0.0f)
+                    ndc /= ndc.W;
+
+                const ImVec2 screen_pos = {
+                    res.x / 2 * (1 - -ndc.X), // x
+                    res.y / 2 * (1 - ndc.Y)  // y
+                };
+
+                return screen_pos; // Return screen coordinates
+            }
         }
 
         return { -1, -1 }; // Return invalid

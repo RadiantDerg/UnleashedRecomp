@@ -47,25 +47,25 @@ struct ARGB8_COLOR
 //}
 //
 // DEBUG_DrawTextAtPosition2 (HE_DebugDrawTextDraw_2)
-PPC_FUNC_IMPL(__imp__sub_822C6EA8);
-PPC_FUNC(sub_822C6EA8)
-{
-    /*Reddog::SDrawText drawText{
-        {Scale(g_aspectRatioOffsetX + 720), Scale(g_aspectRatioOffsetY + 36)},
-        UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r8.u32)),
-        0.0f,
-        1.0f,
-        (*(const ARGB8_COLOR*)g_memory.Translate(ctx.r7.u32)).ToImU32(),
-        Reddog::eDrawTextFlags_NoShadow
-    };
-    Reddog::DebugDraw::DrawTextLog(drawText);*/
-
-    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r8.u32)), 0);
-    //auto pos = (const Hedgehog::Math::CVector*)g_memory.Translate(ctx.r5.u32);
-    //Reddog::DebugDraw::DrawText2D(drawText, { pos->X, pos->Y, pos->Z });
-
-    __imp__sub_822C6EA8(ctx, base);
-}
+//PPC_FUNC_IMPL(__imp__sub_822C6EA8);
+//PPC_FUNC(sub_822C6EA8)
+//{
+//    /*Reddog::SDrawText drawText{
+//        {Scale(g_aspectRatioOffsetX + 720), Scale(g_aspectRatioOffsetY + 36)},
+//        UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r8.u32)),
+//        0.0f,
+//        1.0f,
+//        (*(const ARGB8_COLOR*)g_memory.Translate(ctx.r7.u32)).ToImU32(),
+//        Reddog::eDrawTextFlags_NoShadow
+//    };
+//    Reddog::DebugDraw::DrawTextLog(drawText);*/
+//
+//    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r8.u32)), 0);
+//    //auto pos = (const Hedgehog::Math::CVector*)g_memory.Translate(ctx.r5.u32);
+//    //Reddog::DebugDraw::DrawText2D(drawText, { pos->X, pos->Y, pos->Z });
+//
+//    __imp__sub_822C6EA8(ctx, base);
+//}
 
 // SWA::CDebugDrawText::DrawDebugText1
 PPC_FUNC_IMPL(__imp__sub_822CC300);
@@ -92,7 +92,13 @@ PPC_FUNC(sub_822CC300)
 }
 
 // SWA::CDebugDrawText::DrawDebugText2 @ 0x822CC0D8
+PPC_FUNC_IMPL(__imp__sub_822CC0D8);
+PPC_FUNC(sub_822CC0D8)
+{
+    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r8.u32)), 0);
 
+    __imp__sub_822CC0D8(ctx, base);
+}
 
 // ::GetIsDebugRenderForGameObject()
 PPC_FUNC_IMPL(__imp__sub_82512BF8);
@@ -114,9 +120,10 @@ PPC_FUNC(sub_822C9398)
 
     Reddog::Vector3 start(a2->X, a2->Y, a2->Z);
     Reddog::Vector3 end(a3->X, a3->Y, a3->Z);
+    ARGB8_COLOR     color(a4->value);
 
     const Reddog::SDrawLine line{
-        start, end, a4->value
+        start, end, color.ToImU32()
     };
 
     Reddog::DebugDraw::DrawLine(line);

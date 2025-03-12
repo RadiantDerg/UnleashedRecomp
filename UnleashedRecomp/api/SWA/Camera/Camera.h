@@ -18,9 +18,11 @@ namespace Hedgehog::Mirage
         be<float> m_Near;
         be<float> m_Far;
     };
+
     SWA_ASSERT_OFFSETOF(Hedgehog::Mirage::CCamera, m_View, 0x10);
     SWA_ASSERT_OFFSETOF(Hedgehog::Mirage::CCamera, m_Far, 0xB8);
 }
+
 
 namespace SWA
 {
@@ -42,7 +44,10 @@ namespace SWA
         bool m_InvertY;
         bool m_InvertX;
     };
+
     SWA_ASSERT_OFFSETOF(CCamera2, m_MyCamera, 0x120);
+
+
     class CCamera : public CGameObject // , public Hedgehog::Universe::TStateMachine<CCamera>
     {
     public:
@@ -66,6 +71,7 @@ namespace SWA
         bool m_InvertY;
         bool m_InvertX;
     };
+
     SWA_ASSERT_OFFSETOF(CCamera, test, 0x120);
     SWA_ASSERT_OFFSETOF(CCamera, m_VertAspectRatio, 0x184);
 }
