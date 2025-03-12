@@ -244,3 +244,21 @@ PPC_FUNC(sub_825A0FB0)
 {
     sub_825B7578(ctx, base);
 }
+
+PPC_FUNC_IMPL(__imp__sub_822CAC88);
+PPC_FUNC(sub_822CAC88)
+{
+    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 0);
+    __imp__sub_822CAC88(ctx, base);
+}
+PPC_FUNC_IMPL(__imp__sub_822CB5F8);
+PPC_FUNC(sub_822CB5F8)
+{
+    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 0);
+    __imp__sub_822CB5F8(ctx, base);
+}PPC_FUNC_IMPL(__imp__sub_822CAAC8);
+PPC_FUNC(sub_822CAAC8)
+{
+    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 0);
+    __imp__sub_822CAAC8(ctx, base);
+}

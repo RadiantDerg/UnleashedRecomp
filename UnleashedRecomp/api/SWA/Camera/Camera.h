@@ -9,7 +9,8 @@ namespace Hedgehog::Mirage
     class CCamera : public Base::CObject
     {
     public:
-        SWA_INSERT_PADDING(0x10);
+        virtual ~CCamera() = default;
+        SWA_INSERT_PADDING(0x8);
         Math::CMatrix m_View;
         Math::CMatrix44 m_Projection;
         Math::CVector m_Position;

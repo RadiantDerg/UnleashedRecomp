@@ -24,71 +24,66 @@ namespace Reddog
         return result;
     }
 
-    Hedgehog::Math::CVector4 operator* (const Hedgehog::Math::CMatrix& m33, const Hedgehog::Math::CVector4& v4)
+    /// MOVE THESE TO THEIR OWN RESPECTIVE CLASSES
+    /// AND CHANGE TYPES TO HH::MATH ONES!!!
+    Vector4 operator* (const Hedgehog::Math::CMatrix& m33, const Vector4& v4)
     {
         return {
-            m33.m_M00 * v4.X + m33.m_M01 * v4.Y + m33.m_M02 * v4.Z, // Row 1
-            m33.m_M10 * v4.X + m33.m_M11 * v4.Y + m33.m_M12 * v4.Z, // Row 2
-            m33.m_M20 * v4.X + m33.m_M21 * v4.Y + m33.m_M22 * v4.Z, // Row 3
-            v4.W 
-            };
-    }
-
-    Hedgehog::Math::CVector4 operator* (const Hedgehog::Math::CMatrix44& m44, const Hedgehog::Math::CVector4& v4)
-    {
-        return {
-            m44.data[0] * v4.X + m44.data[1] * v4.Y + m44.data[2] * v4.Z + m44.data[3] * v4.W,      // Row 1
-            m44.data[4] * v4.X + m44.data[5] * v4.Y + m44.data[6] * v4.Z + m44.data[7] * v4.W,      // Row 2
-            m44.data[8] * v4.X + m44.data[9] * v4.Y + m44.data[10] * v4.Z + m44.data[11] * v4.W,    // Row 3
-            m44.data[12] * v4.X + m44.data[13] * v4.Y + m44.data[14] * v4.Z + m44.data[15] * v4.W   // Row 4
+            m33.m_M00.get() * v4.x + m33.m_M10.get() * v4.y + m33.m_M20.get() * v4.z + m33.m_M30.get(), // Row 1
+            m33.m_M01.get() * v4.x + m33.m_M11.get() * v4.y + m33.m_M21.get() * v4.z + m33.m_M31.get(), // Row 2
+            m33.m_M02.get() * v4.x + m33.m_M12.get() * v4.y + m33.m_M22.get() * v4.z + m33.m_M32.get(), // Row 3
+            v4.w
         };
     }
+
+    Vector4 operator* (const Hedgehog::Math::CMatrix44& m44, const Vector4& v4)
+    {
+        return {
+            m44.data[0].get() * v4.x + m44.data[4].get() * v4.y + m44.data[8].get() * v4.z + m44.data[12].get() * v4.w,
+            m44.data[1].get() * v4.x + m44.data[5].get() * v4.y + m44.data[9].get() * v4.z + m44.data[13].get() * v4.w,
+            m44.data[2].get() * v4.x + m44.data[6].get() * v4.y + m44.data[10].get() * v4.z + m44.data[14].get() * v4.w,
+            m44.data[3].get() * v4.x + m44.data[7].get() * v4.y + m44.data[11].get() * v4.z + m44.data[15].get() * v4.w
+        };
+    }
+    
+
+    /// <summary>
+    /// Optimise this and improve it
+    /// </summary>
+    /// <param name="in_rPosition"></param>
+    /// <returns></returns>
 
     ImVec2 GetNDCCoordinate(const Vector3& in_rPosition)
     {
         auto& res = ImGui::GetIO().DisplaySize;
 
-        if (Reddog::DebugDraw::ms_pCamera != 0)
+        if (Reddog::DebugDraw::ms_pCamera != nullptr)
         {
-            // Reference
-            //const auto camera = SWA::CGameDocument::GetInstance()->GetWorld()->GetCamera();
-            //Hedgehog::Math::CVector4 ndc = camera->m_MyCamera.m_View * Hedgehog::Math::CVector4(in_rVec.x, in_rVec.y, in_rVec.z, 1.0f);
-            //ndc = camera->m_MyCamera.m_Projection * ndc;
+            const auto& camera = Reddog::DebugDraw::ms_pCamera->m_MyCamera;
 
-            const auto camera = Reddog::DebugDraw::ms_pCamera;
+            Vector4 worldPos(in_rPosition.x, in_rPosition.y, in_rPosition.z, 1.0f);
+            Vector4 cameraPos = camera.m_View * worldPos;
+            Vector4 clipPos = camera.m_Projection * cameraPos;
 
-            // Expand matrix to 4x4
-            Hedgehog::Math::CMatrix44 test {
-                camera->m_MyCamera.m_View.m_M00, camera->m_MyCamera.m_View.m_M01, camera->m_MyCamera.m_View.m_M02, 0.0f,
-                camera->m_MyCamera.m_View.m_M10, camera->m_MyCamera.m_View.m_M11, camera->m_MyCamera.m_View.m_M12, 0.0f,
-                camera->m_MyCamera.m_View.m_M20, camera->m_MyCamera.m_View.m_M21, camera->m_MyCamera.m_View.m_M22, 0.0f,
-                0.0f, 0.0f, 0.0f, 1.0f
-            };
+            if (clipPos.w <= 0.0f)
+                return { -1, -1 };
 
-            // Multiply
-            Hedgehog::Math::CVector4 bruh(test * Hedgehog::Math::CVector4(in_rPosition.x, in_rPosition.y, in_rPosition.z, 1.0f));
+            clipPos.x /= clipPos.w;
+            clipPos.y /= clipPos.w;
+            clipPos.z /= clipPos.w;
 
-            // I think it all goes downhill from here...
-            Hedgehog::Math::CVector4 ndc = camera->m_MyCamera.m_Projection * bruh;
+            float screenX = (clipPos.x * 0.5f + 0.5f) * res.x; float screenY = (clipPos.y * -0.5f + 0.5f) * res.y;
 
+            if (screenX < 0 || screenX > res.x || screenY < 0 || screenY > res.y)
+                return { -1, -1 };
 
-            if (ndc.W > 0.0f) // Check if given position is in front of the camera
-            {
-                // normalize
-                if (ndc.W != 0.0f)
-                    ndc /= ndc.W;
-
-                const ImVec2 screen_pos = {
-                    res.x / 2 * (1 - -ndc.X), // x
-                    res.y / 2 * (1 - ndc.Y)  // y
-                };
-
-                return screen_pos; // Return screen coordinates
-            }
+            return { screenX, screenY };
         }
 
-        return { -1, -1 }; // Return invalid
+        return { -1, -1 };
     }
+
+
 
 
     void Exec_DrawLines(ImDrawList* drawList, ImVec2 canvasSize, float delta)
