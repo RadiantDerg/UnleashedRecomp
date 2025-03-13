@@ -3,6 +3,11 @@
 #include "ui/imgui_utils.h"
 #include <user/config.h>
 
+#if _WIN32
+
+#else
+// Linux
+#endif
 
 namespace Reddog
 {
@@ -241,7 +246,9 @@ namespace Reddog
         DrawTextLog("TEST1 NORMAL");
         DrawTextLog("TEST2 COLORED", 0, 0xFF37C800);*/
 
-        auto stats = fmt::format("== Stats ==\nLines: {}\nTexts: {}\nLogs: {}", ms_LineList.size(), ms_FreeTextList.size(), ms_LogTextList.size());
+        auto stats = fmt::format("== Stats ==\nLines: {}\nTexts: {}\nLogs: {}\nLine Mem: {} Bytes\nText Mem: {} Bytes", 
+            ms_LineList.size(), ms_FreeTextList.size(), ms_LogTextList.size(), sizeof(SDrawLine) * ms_LineList.capacity(),
+            sizeof(SDrawText) * ms_FreeTextList.capacity() + sizeof(SDrawText) * ms_LogTextList.capacity());
         SDrawText text = { ImVec2(Scale(40), Scale(75)), stats, 0, 0.75f };
         DrawText2D(text);
 

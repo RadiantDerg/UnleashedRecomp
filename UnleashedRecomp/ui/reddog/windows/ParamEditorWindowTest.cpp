@@ -27,6 +27,9 @@ void ParamEditorWindowTest::Draw()
 {
     if (Begin())
     {
+        if (SWA::CGameDocument2::GetInstance() == nullptr)
+            return End();
+
         auto paramEditor = SWA::CGameDocument2::GetInstance()->m_pMember->m_spParameterEditor2nd;
         auto listTest = paramEditor.get()->m_spGlobalParameterManager;
         auto list = listTest->m_GlobalParameterFileList;
@@ -34,7 +37,7 @@ void ParamEditorWindowTest::Draw()
         
         for (auto e : list)
         {
-            if (ImGui::CollapsingHeader(GetString(e->m_Name.c_str()).c_str()))
+            if (ImGui::CollapsingHeader(GetString(e->m_Description.c_str()).c_str()))
             {
                 // Group nodes
                 for (const auto& prmGroup : e->m_Children)
@@ -46,28 +49,28 @@ void ParamEditorWindowTest::Draw()
                     // Category nodes
                     if (ImGui::TreeNode(name.c_str()))
                     {
-
                         for (boost::shared_ptr<SWA::CAbstractParameter> prmList : prmGroup->m_Children)
                         {
                             auto name2 = GetString(prmList.get()->m_Description.c_str());
                             //type = GetVTableType(*reinterpret_cast<size_t*>(prmList.get()));
 
-                            //if (ImGui::TreeNode(name2.c_str()))
-                            //{
-                            //    auto test = prmList.get()->m_Children.size();
-                            //    for (boost::shared_ptr<SWA::CAbstractParameter> prmList2 : prmList->m_Children)
-                            //    {
-                            //        auto name2 = GetString(prmList2.get()->m_Description.c_str());
-                            //        //type = GetVTableType(*reinterpret_cast<size_t*>(prmList.get()));
-                            //        auto test = prmList2->m_pEditParam;
-                            //        // Parameter nodes
-                            //        for (const auto& parameter : prmList2->m_pEditParam->m_ParamList)
-                            //        {
-                            //            ImGui::TextColored(ImVec4(1, 0, 0, 1), parameter->m_Name.c_str());
-                            //        }
-                            //    }
-                            //    ImGui::TreePop();
-                            //}
+                            if (ImGui::TreeNode(name2.c_str()))
+                            {
+                                // ...Parameter nodes?
+                                for (boost::shared_ptr<SWA::CAbstractParameter> prmList2 : prmList->m_Children)
+                                {
+                                    auto name2 = GetString(prmList2.get()->m_Name.c_str());
+                                    //type = GetVTableType(*reinterpret_cast<size_t*>(prmList.get()));
+                                    auto test = prmList2->m_pEditParam;
+                                    
+                                    // Parameter nodes
+                                    for (const auto& parameter : prmList2->m_pEditParam->m_ParamList)
+                                    {
+                                        ImGui::TextColored(ImVec4(1, 0, 0, 1), parameter->m_Name.c_str());
+                                    }
+                                }
+                                ImGui::TreePop();
+                            }
                         }
                         ImGui::TreePop();
                     }

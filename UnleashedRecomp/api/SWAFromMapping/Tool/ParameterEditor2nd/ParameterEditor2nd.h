@@ -1,5 +1,6 @@
 #pragma once
 #include <SWA/System/GameObject.h>
+
 namespace SWA
 {
     class CParamBase 
@@ -9,11 +10,15 @@ namespace SWA
         Hedgehog::Base::CSharedString m_Name;
         uint8_t m_Field10;
     };
+
+
     class CEditParam 
     {
     public:
         hh::vector<xpointer<CParamBase>> m_ParamList;
     };
+
+
     class CAbstractParameter : public Hedgehog::Base::CObject
     {
     public:
@@ -27,15 +32,21 @@ namespace SWA
     };
     SWA_ASSERT_OFFSETOF(CAbstractParameter, m_Name, 0xC);
     SWA_ASSERT_OFFSETOF(CAbstractParameter, m_Children, 0x14);
+
+
     class CParameterFile : public CAbstractParameter
     {
 
     };
+
+
     class CGlobalParameterManager 
     {
     public:
         hh::vector<boost::shared_ptr<CParameterFile>> m_GlobalParameterFileList;
     };
+
+
     class CParameterEditorWindow;
 
     class CParameterEditor2nd : public SWA::CGameObject //Hedgehog::Mirage::CRenderable, Hedgehog::Universe::TStateMachine<SWA::CParameterEditor2nd>

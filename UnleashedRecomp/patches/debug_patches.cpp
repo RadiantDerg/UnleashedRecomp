@@ -116,7 +116,6 @@ PPC_FUNC(sub_822C9398)
 {
     auto a2 = (Hedgehog::Math::CVector*)g_memory.Translate(ctx.r4.u32);
     auto a3 = (Hedgehog::Math::CVector*)g_memory.Translate(ctx.r5.u32);
-    //auto a4 = (be<unsigned int>*)g_memory.Translate(ctx.r6.u32);
     auto a4 = (ARGB8_COLOR*)g_memory.Translate(ctx.r6.u32);
 
     Reddog::Vector3 start(a2->X, a2->Y, a2->Z);
@@ -261,13 +260,6 @@ PPC_FUNC(sub_822CB5F8)
     __imp__sub_822CB5F8(ctx, base);
 }
 
-// SetEditor Text thing #3
-PPC_FUNC_IMPL(__imp__sub_822CAAC8);
-PPC_FUNC(sub_822CAAC8)
-{
-    //Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 3);
-    __imp__sub_822CAAC8(ctx, base);
-}
 struct Test 
 {
     be<int> dword0;
@@ -285,6 +277,8 @@ struct Test
 PPC_FUNC_IMPL(__imp__sub_822CA7C8);
 PPC_FUNC(sub_822CA7C8)
 {
+    //Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 3);
+
     Test* test = (Test*)(base + ctx.r3.u32);
     if (test != nullptr)
     {
@@ -296,6 +290,7 @@ PPC_FUNC(sub_822CA7C8)
     __imp__sub_822CA7C8(ctx, base);
 
 }
+
 PPC_FUNC_IMPL(__imp__sub_82E01730);
 PPC_FUNC(sub_82E01730)
 {

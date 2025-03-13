@@ -32,7 +32,11 @@ void Reddog::WindowList::Draw()
             if ((pTrueWindow->Flags & Reddog::eWindowFlags_NoListEntry) != 0)
                 continue;
 
-            if (Reddog::ExplicitButton(pTrueWindow->Name, Reddog::EButtonTextAlignment::Left, { 190, 32 }, 1.1f))
+            const float nameWidth = ImGui::CalcTextSize(pTrueWindow->Name).x;
+            const ImVec2 framePadding = ImGui::GetStyle().FramePadding;
+            const ImVec2 size = nameWidth > 250.0f ? ImVec2(nameWidth + (framePadding.x + 8.0f) * 2, 32) : ImVec2(250, 32);
+
+            if (Reddog::ExplicitButton(pTrueWindow->Name, Reddog::EButtonTextAlignment::Left, size, 1.1f))
                 pTrueWindow->SetVisible();
         }
     }
@@ -41,18 +45,9 @@ void Reddog::WindowList::Draw()
 
 void Reddog::Manager::Init()
 {
-    //auto fontAtlas = ImGui::GetIO().Fonts;
-    //ImVector<ImWchar> ranges;
-    //ImFontGlyphRangesBuilder builder;
-
-    //builder.AddRanges(fontAtlas->GetGlyphRangesJapanese());  // Add Japanese glyphs
-    //builder.AddText("•※└");                                 // Add missing glyphs
-    //builder.BuildRanges(&ranges);
-
-    //ms_pFont = fontAtlas->AddFontFromFileTTF("xarialuni.ttf", 24.0f, nullptr, ranges.Data);
-    //assert(ms_pFont != nullptr);
-
     ms_pFont = ImFontAtlasSnapshot::GetFont("FOT-NewRodinPro-M.otf");
+    //ms_pFont = ImFontAtlasSnapshot::GetFont("xarialuni.ttf");
+    assert(ms_pFont != nullptr && "Reddog::ms_pFont was nullptr!");
     
     g_upDebugIcon = LoadTexture(g_debug_icon, sizeof(g_debug_icon));
 
