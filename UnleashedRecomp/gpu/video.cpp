@@ -7697,8 +7697,10 @@ GUEST_FUNCTION_HOOK(sub_82AE2BF8, ScreenShaderInit);
 // recreating framebuffers every single frame instead.
 GUEST_FUNCTION_STUB(sub_82BAAD38);
 
-GUEST_FUNCTION_STUB(sub_822C15D8);
-GUEST_FUNCTION_STUB(sub_822C1810);
+//GUEST_FUNCTION_STUB(sub_822C15D8); // SWA::CDebugDrawTextXenon
+//GUEST_FUNCTION_STUB(sub_822C1810); // SWA::CDebugDrawTextXenon::Render?
+GUEST_FUNCTION_STUB(sub_83114C40); // SWA::CDebugDrawTextXenon::Render() { CreateTextDrawData() }
+//GUEST_FUNCTION_STUB(sub_83122DD8); // Text rendering crashes here
 GUEST_FUNCTION_STUB(sub_82BD97A8);
 GUEST_FUNCTION_STUB(sub_82BD97E8);
 GUEST_FUNCTION_STUB(sub_82BDD370); // SetGammaRamp
