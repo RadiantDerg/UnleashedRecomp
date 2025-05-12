@@ -34,7 +34,7 @@ void ParamEditorWindowTest::Draw()
         auto listTest = paramEditor.get()->m_spGlobalParameterManager;
         auto list = listTest->m_GlobalParameterFileList;
         auto t = list.size();
-        
+        paramEditor->m_Field12C = true;
         for (auto e : list)
         {
             if (ImGui::CollapsingHeader(GetString(e->m_Description.c_str()).c_str()))

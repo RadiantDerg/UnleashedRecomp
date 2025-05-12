@@ -1105,3 +1105,26 @@ registers = ["r3"]
 name = "DisableBoostFilterMidAsmHook"
 address = 0x82B48C9C
 registers = ["r11"]
+
+[[midasm_hook]]
+name = "SetEditor1stRestore_ObjName"
+address = 0x825A41A8
+registers = ["r3"]
+
+[[midasm_hook]]
+name = "SetEditor1stRestore_Params"
+address = 0x825A4244
+registers = ["r30", "r3"]
+
+[[midasm_hook]]
+name = "SetEditor1stRestore_ObjList"
+address = 0x825A4304
+registers = ["r29", "r3"]
+[[midasm_hook]]
+name = "SetEditor1stRestore_Mystery"
+address = 0x825A4718
+registers = ["r4"]
+[[midasm_hook]]
+name = "SetEditor1stRestore_SelFile"
+address = 0x825A2098
+registers = ["r30","r4"]

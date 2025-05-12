@@ -7,6 +7,7 @@ namespace Hedgehog::Database
 
 namespace SWA
 {
+    class CSetObjectManager;
     class CGameDocument : public Hedgehog::Base::CSynchronizedObject
     {
     public:
@@ -31,7 +32,9 @@ namespace SWA
 
             SWA_INSERT_PADDING(0x1C);
             boost::shared_ptr<Hedgehog::Database::CDatabase> m_spDatabase;
-            SWA_INSERT_PADDING(0x88);
+            SWA_INSERT_PADDING(0x60);
+            boost::shared_ptr<CSetObjectManager> m_pSetObjectManager;
+            SWA_INSERT_PADDING(0x20);
             Hedgehog::Base::CSharedString m_StageName;
             xpointer<CSoundAdministrator> m_pSoundAdministrator;
             SWA_INSERT_PADDING(0x48);
@@ -60,6 +63,7 @@ namespace SWA
     SWA_ASSERT_SIZEOF(CGameDocument::CMember::SScoreInfo, 0x4C);
 
     SWA_ASSERT_OFFSETOF(CGameDocument::CMember, m_spDatabase, 0x1C);
+    SWA_ASSERT_OFFSETOF(CGameDocument::CMember, m_pSetObjectManager, 0x84);
     SWA_ASSERT_OFFSETOF(CGameDocument::CMember, m_StageName, 0xAC);
     SWA_ASSERT_OFFSETOF(CGameDocument::CMember, m_pSoundAdministrator, 0xB0);
     SWA_ASSERT_OFFSETOF(CGameDocument::CMember, m_pGeneralWindow, 0xFC);

@@ -202,11 +202,20 @@ PPC_FUNC(sub_82522040)
 /// <param name=""></param>
 /// 
 
-PPC_FUNC_IMPL(__imp__sub_827B69A0);
-PPC_FUNC(sub_827B69A0)
+PPC_FUNC_IMPL(__imp__sub_8250E140);
+PPC_FUNC(sub_8250E140)
 {
-    TestWindow::SetObjectManagerActor = (CSetObjectManager*)(base + PPC_LOAD_U32(ctx.r3.u32));
-    __imp__sub_827B69A0(ctx, base);
+    auto tes5 = *(boost::shared_ptr<void*>*)(base + ctx.r3.u32);
+    auto test1 = (void*)(base + ctx.r3.u32);
+    auto test = * reinterpret_cast<size_t*>(test1);
+    __imp__sub_8250E140(ctx, base);
+
+}
+PPC_FUNC_IMPL(__imp__sub_827B38C0);
+PPC_FUNC(sub_827B38C0)
+{
+    TestWindow::SetObjectManagerActor = (SWA::CSetObjectManager*)(base + ctx.r3.u32);
+    __imp__sub_827B38C0(ctx, base);
 }
 
 PPC_FUNC_IMPL(__imp__sub_82540248);
@@ -260,55 +269,127 @@ PPC_FUNC(sub_822CB5F8)
     __imp__sub_822CB5F8(ctx, base);
 }
 
-struct Test 
-{
-    be<int> dword0;
-    be<int> dword4;
-    be<int> test1;
-    be<int> test2;
-    be<int> test3;
-    be<int> test4;
-    be<int> Length;
-    be<int> dword18;
-    be<int> dword19;
-    be<int> dword20;
+#pragma pack(push, 1)
+struct CSetEditor {
+    uint8_t pad275[0x12C];
+    uint32_t* dword12C;
 };
-// SetEditor Text thing #3
-PPC_FUNC_IMPL(__imp__sub_822CA7C8);
-PPC_FUNC(sub_822CA7C8)
+#pragma pack(pop)
+SWA_ASSERT_OFFSETOF(CSetEditor, dword12C, 0x12c);
+
+//PPC_FUNC_IMPL(__imp__sub_82E01730);
+//PPC_FUNC(sub_82E01730)
+//{
+//    Hedgehog::Base::CSharedString* test2 = (Hedgehog::Base::CSharedString*)(base + ctx.r4.u32);
+//
+//    Test* test3 = (Test*)(base + ctx.r3.u32);
+//    __imp__sub_82E01730(ctx, base);
+//    Test* test = (Test*)(base + ctx.r3.u32);
+//    
+//    if (test != nullptr)
+//    {
+//        if(test2 != nullptr)
+//        if (test2->c_str() != nullptr)
+//        {
+//            //Reddog::DebugDraw::DrawTextLog(test2->c_str(), 0);
+//        }
+//        Test g = *test;
+//        auto f = g.dword4;
+//        auto h = f;
+//    }
+//}
+PPC_FUNC_IMPL(__imp__sub_825A4130);
+PPC_FUNC(sub_825A4130)
 {
-    //Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r4.u32)), 3);
 
-    Test* test = (Test*)(base + ctx.r3.u32);
-    if (test != nullptr)
+    CSetEditor* test2 = (CSetEditor*)(base + ctx.r3.u32);
+    if (GetAsyncKeyState(VK_F11))
     {
+        uint32_t value = (*reinterpret_cast<be<uint32_t>*>(test2->dword12C)).get();
+        printf("");
 
-        Test g = *test;
-        auto f = g.dword4;
-        auto h = f;
     }
-    __imp__sub_822CA7C8(ctx, base);
+    __imp__sub_825A4130(ctx, base);
+}
+//bool testing;
+//
+//PPC_FUNC_IMPL(__imp__sub_82E53590);
+//PPC_FUNC(sub_82E53590)
+//{
+//    ctx.r4.u32 = testing ? 2 : 0;
+//    testing = !testing;
+//    __imp__sub_82E53590(ctx, base);
+//    return;
+//}
 
+
+void SetEditor1stRestore_ObjName(PPCRegister& r3)
+{
+    auto string = ((Hedgehog::Base::CSharedString*)g_memory.Translate(r3.u32));
+    Reddog::SDrawText drawText{
+       {
+           100, 100
+       },
+       string->c_str(),
+       0.0f,
+       1.5f,
+       0xFFFFFFFF,
+       Reddog::eDrawTextFlags_NoShadow
+    };
+    Reddog::DebugDraw::DrawText2D(drawText);
 }
 
-PPC_FUNC_IMPL(__imp__sub_82E01730);
-PPC_FUNC(sub_82E01730)
+void SetEditor1stRestore_Params(PPCRegister& r30, PPCRegister& r3)
 {
-    Hedgehog::Base::CSharedString* test2 = (Hedgehog::Base::CSharedString*)(base + ctx.r4.u32);
+    auto string = ((Hedgehog::Base::CSharedString*)g_memory.Translate(r3.u32));
+    Reddog::SDrawText drawText{
+       {
+           150, 200 + ((float)r30.u32 * 20)
+       },
+       string->c_str(),
+       0.0f,
+       0.85f,
+       0xFFFFFFFF,
+       Reddog::eDrawTextFlags_NoShadow
+    };
 
-    Test* test3 = (Test*)(base + ctx.r3.u32);
-    __imp__sub_82E01730(ctx, base);
-    Test* test = (Test*)(base + ctx.r3.u32);
+    Reddog::DebugDraw::DrawText2D(drawText);
+}
+void SetEditor1stRestore_ObjList(PPCRegister& r29, PPCRegister& r3)
+{
+    auto string = ((Hedgehog::Base::CSharedString*)g_memory.Translate(r3.u32));
+    Reddog::SDrawText drawText{
+       {
+          1200, 200 + ((float)r29.u32 * 20)
+       },
+       string->c_str(),
+       0.0f,
+       0.85f,
+       r29.u32 == 11 ? 0xFF0000FF : 0xFFFFFFFF,
+       Reddog::eDrawTextFlags_NoShadow
+    };
+    Reddog::DebugDraw::DrawText2D(drawText);
+}
+void SetEditor1stRestore_SelFile(PPCRegister& r30, PPCRegister& r4)
+{
+    auto string = ((Hedgehog::Base::CSharedString*)g_memory.Translate(r4.u32));
+    Reddog::SDrawText drawText{
+       {
+          1200, 200 + ((float)r30.u32 * 20)
+       },
+       string->c_str(),
+       0.0f,
+       0.85f,
+       r30.u32 == 11 ? 0xFF0000FF : 0xFFFFFFFF,
+       Reddog::eDrawTextFlags_NoShadow
+    };
+    Reddog::DebugDraw::DrawText2D(drawText);
+}
+
+void SetEditor1stRestore_Mystery(PPCRegister& r4)
+{
+    auto string = ((Hedgehog::Base::CSharedString*)g_memory.Translate(r4.u32));
     
-    if (test != nullptr)
-    {
-        if(test2 != nullptr)
-        if (test2->c_str() != nullptr)
-        {
-            Reddog::DebugDraw::DrawTextLog(test2->c_str(), 0);
-        }
-        Test g = *test;
-        auto f = g.dword4;
-        auto h = f;
-    }
+    Reddog::DebugDraw::DrawTextLog(string->c_str());
 }
+void Test(){}
