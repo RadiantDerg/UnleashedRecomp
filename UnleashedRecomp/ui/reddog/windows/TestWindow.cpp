@@ -9,9 +9,39 @@
 static TestWindow g_window;
 
 bool t;
+int testingIdx;
 uint32_t GetVtable(void* in_Ptr)
 {
     return *reinterpret_cast<be<uint32_t>*>(in_Ptr);
+}
+std::string GetParamType(uint32_t in_Vtable)
+{
+    switch (in_Vtable)
+    {
+    case 0x8203C31C:
+        return "[TYPELIST]";
+    case 0x8203C374:
+        return "[FLOAT]";
+    case 0x8203C234:
+        return "[TARGET_LIST]";
+    case 0x8203C184:
+        return "[TARGET]";
+    case 0x8203C05C:
+        return "[LIST_SETID]";
+    case 0x8203C0E4:
+        return "[POSITION]";
+    case 0x8203BE54:
+        return "[DUMMY]";
+    case 0x8203BDAC:
+        return "[BOOL]";
+    case 0x8203C40C:
+        return "[ULONG]";
+    case 0x8203C4BC:
+        return "[INT]";
+    case 0x8203C464:
+        return "[LONG]";
+    }
+    return std::format("[{:x}]", in_Vtable);
 }
 void TestWindow::Draw()
 {
@@ -28,7 +58,6 @@ void TestWindow::Draw()
         if (t)
         {
             auto m_pSetObjectManager = (SWA::CSetObjectManager*)SWA::CGameDocument::GetInstance()->m_pMember->m_pSetObjectManager.get();
-            auto whatever = m_pSetObjectManager->m_pMember->m_spFactory->m_MakeList;
             if (ImGui::BeginListBox("Objects"))
             {
                 for (auto& m_ObjName : m_pSetObjectManager->m_pMember->m_spFactory->m_NameToMakeListIndexMap)
@@ -37,17 +66,33 @@ void TestWindow::Draw()
                 }
                 ImGui::EndListBox();
             }
+            ImGui::InputInt("ObjIdx", &testingIdx);
 
             guest_stack_var<boost::shared_ptr<SWA::CSetObjectEntry>> spEntry;
-            m_pSetObjectManager->m_pMember->m_spFactory->m_MakeList[2].SpawnObject(spEntry);
+            m_pSetObjectManager->m_pMember->m_spFactory->m_MakeList[testingIdx].SpawnObject(spEntry);
 
             guest_stack_var<SWA::CEditParam> pEditParam;
             spEntry->get()->m_spSetObjectInfo->spSetObjectListener->InitializeEditParam(pEditParam);
-            for (auto& pParam : pEditParam->m_ParamList)
+            if (ImGui::Button("Try Spawn"))
+                SWA::CGameDocument::GetInstance()->AddGameObject(spEntry->get()->m_spSetObjectInfo->spGameObject, guest_stack_var < Hedgehog::Base::CSharedString>("main"));
+
+            if (ImGui::BeginListBox("tEST"))
             {
-                auto in = GetVtable(pParam.get());
-                auto namee = pParam->m_Name.c_str();
-                printf("");
+                for (auto& m_ObjName : m_pSetObjectManager->m_pMember->m_spFactory->m_NameToMakeListIndexMap)
+                {
+                    if (m_ObjName.second == testingIdx)
+                    {
+                        ImGui::Text(m_ObjName.first.c_str());
+                        break;
+                    }
+                }
+                for (auto& pParam : pEditParam->m_ParamList)
+                {
+                    auto in = GetVtable(pParam.get());
+                    auto namee = pParam->m_Name.c_str();
+                    ImGui::Text((std::string(namee) + GetParamType(in)).c_str());
+                }
+                ImGui::EndListBox();
             }
         }
         if (Reddog::Button("Start SetEditor1st"))

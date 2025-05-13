@@ -37,7 +37,7 @@ public:
     {
         AllocGuestStackMemory();
 
-        if (Init)
+        if constexpr (Init)
             new (get()) T(std::forward<Args>(args)...);
     }
 
@@ -45,7 +45,7 @@ public:
     {
         AllocGuestStackMemory();
 
-        if (Init)
+        if constexpr (Init)
             new (get()) T(*other->get());
     }
 
@@ -53,7 +53,7 @@ public:
     {
         AllocGuestStackMemory();
 
-        if (Init)
+        if constexpr (Init)
             new (get()) T(std::move(*other->get()));
     }
 

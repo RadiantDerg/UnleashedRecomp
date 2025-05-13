@@ -13,8 +13,12 @@ namespace Hedgehog::Base
     public:
         THolder(T* in_pObject) : CHolderBase(in_pObject, ForceSync) {}
 
-        T* get() const;
+        T* get() const 
+        {
+            return static_cast<T*>(m_pSynchronizedObject.get());
+        }
         T* operator->() const;
         T* operator*() const;
+        ~THolder() {};
     };
 }

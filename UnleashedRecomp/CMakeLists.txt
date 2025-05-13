@@ -153,6 +153,7 @@ set(UNLEASHED_RECOMP_UI_CXX_SOURCES
     "ui/reddog/reddog_controls.cpp"
     "ui/reddog/reddog_manager.cpp"
     "ui/reddog/reddog_window.cpp"
+    "ui/reddog/editparam_draw.cpp"
     #"ui/reddog/window_manager.cpp" 
     "ui/reddog/windows/exports_window.cpp"
     "ui/reddog/windows/memory_inspector_window.cpp"

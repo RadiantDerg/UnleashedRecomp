@@ -17,7 +17,7 @@ namespace Hedgehog::Base
         CHolderBase(CSynchronizedObject* in_pSynchronizedObject, bool in_ForceSync = false);
         CHolderBase(CHolderBase&& io_rOther);
         CHolderBase(const CHolderBase& in_rOther);
-        ~CHolderBase();
+        ~CHolderBase() {};
 
         CSynchronizedObject* get() const;
         CSynchronizedObject* operator->() const;

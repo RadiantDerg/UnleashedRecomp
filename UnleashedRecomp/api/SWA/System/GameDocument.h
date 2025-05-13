@@ -7,6 +7,27 @@ namespace Hedgehog::Database
 
 namespace SWA
 {
+    class CWorld2 : public Hedgehog::Base::CSynchronizedObject, public Hedgehog::Universe::CMessageActor
+    {
+    public:
+        SWA_INSERT_PADDING(16-8);
+        class CMember
+        {
+        public:
+            int m_pRenderScene;
+            void* m_spRenderScene;
+            Hedgehog::Base::CSharedString m_Name;
+            int dwordC;
+            int dword10;
+            int dword14;
+            int dword18;
+            SWA_INSERT_PADDING(80);
+            int dword6C;
+            int dword70;
+        };
+        xpointer<CMember> m_pMember;
+    };
+    SWA_ASSERT_OFFSETOF(CWorld2, m_pMember, 0x98);
     class CSetObjectManager;
     class CGameDocument : public Hedgehog::Base::CSynchronizedObject
     {
@@ -30,7 +51,9 @@ namespace SWA
                 SWA_INSERT_PADDING(0x10);
             };
 
-            SWA_INSERT_PADDING(0x1C);
+            SWA_INSERT_PADDING(0xC);
+            hh::map<Hedgehog::Base::CSharedString, boost::shared_ptr<CWorld2>> m_Worlds;
+            SWA_INSERT_PADDING(0x1C-0xC-0xC);
             boost::shared_ptr<Hedgehog::Database::CDatabase> m_spDatabase;
             SWA_INSERT_PADDING(0x60);
             boost::shared_ptr<CSetObjectManager> m_pSetObjectManager;
@@ -46,6 +69,7 @@ namespace SWA
 
         // TODO: Hedgehog::Base::TSynchronizedPtr<CGameDocument>
         static CGameDocument* GetInstance();
+        void AddGameObject(const guest_stack_var<boost::shared_ptr<CGameObject>>& in_spGameObject, const guest_stack_var<Hedgehog::Base::CSharedString>& in_WorldName);
 
         xpointer<void> m_pVftable;
         xpointer<CMember> m_pMember;

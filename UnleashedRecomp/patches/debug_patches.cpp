@@ -217,6 +217,11 @@ PPC_FUNC(sub_827B38C0)
     TestWindow::SetObjectManagerActor = (SWA::CSetObjectManager*)(base + ctx.r3.u32);
     __imp__sub_827B38C0(ctx, base);
 }
+PPC_FUNC_IMPL(__imp__sub_825B40F8);
+PPC_FUNC(sub_825B40F8)
+{
+    __imp__sub_825B40F8(ctx, base);
+}
 
 PPC_FUNC_IMPL(__imp__sub_82540248);
 PPC_FUNC(sub_82540248)
@@ -269,6 +274,13 @@ PPC_FUNC(sub_822CB5F8)
     __imp__sub_822CB5F8(ctx, base);
 }
 
+//WarpPoint addcallback
+PPC_FUNC_IMPL(__imp__sub_8278EB30);
+PPC_FUNC(sub_8278EB30)
+{
+    __imp__sub_8278EB30(ctx, base);
+}
+
 #pragma pack(push, 1)
 struct CSetEditor {
     uint8_t pad275[0x12C];
@@ -298,19 +310,6 @@ SWA_ASSERT_OFFSETOF(CSetEditor, dword12C, 0x12c);
 //        auto h = f;
 //    }
 //}
-PPC_FUNC_IMPL(__imp__sub_825A4130);
-PPC_FUNC(sub_825A4130)
-{
-
-    CSetEditor* test2 = (CSetEditor*)(base + ctx.r3.u32);
-    if (GetAsyncKeyState(VK_F11))
-    {
-        uint32_t value = (*reinterpret_cast<be<uint32_t>*>(test2->dword12C)).get();
-        printf("");
-
-    }
-    __imp__sub_825A4130(ctx, base);
-}
 //bool testing;
 //
 //PPC_FUNC_IMPL(__imp__sub_82E53590);

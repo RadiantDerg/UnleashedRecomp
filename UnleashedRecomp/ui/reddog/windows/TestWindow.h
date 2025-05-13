@@ -94,6 +94,7 @@
 //SWA_ASSERT_OFFSETOF(CSetObjectManager, m_pMember, 0xC4);
 
 
+
 class TestWindow : public Reddog::Window
 {
 public:
