@@ -45,10 +45,13 @@ void Reddog::WindowList::Draw()
 
 void Reddog::Manager::Init()
 {
-    ms_pFont = ImFontAtlasSnapshot::GetFont("FOT-NewRodinPro-M.otf");
-    //ms_pFont = ImFontAtlasSnapshot::GetFont("xarialuni.ttf");
+    auto& font = ImGui::GetIO().Fonts;
+#ifdef ENABLE_IM_FONT_ATLAS_SNAPSHOT
+    ms_pFont = ImFontAtlasSnapshot::GetFont("xarialuni2.ttf");
+#elif
+    ms_pFont = font->AddFontFromFileTTF("xarialuni2.ttf", 24.0f, nullptr, font->GetGlyphRangesJapanese());
+#endif
     assert(ms_pFont != nullptr && "Reddog::ms_pFont was nullptr!");
-    
     g_upDebugIcon = LoadTexture(g_debug_icon, sizeof(g_debug_icon));
 
     Reddog::InitControlsResources();

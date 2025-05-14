@@ -45,11 +45,7 @@ std::string GetParamType(uint32_t in_Vtable)
 }
 void TestWindow::Draw()
 {
-    ImFont* font = ImFontAtlasSnapshot::GetFont("FOT-SeuratPro-M.otf");
-    float defaultScale = font->Scale;
-    font->Scale = ImGui::GetDefaultFont()->FontSize / font->FontSize;
-    ImGui::PushFont(font);
-    if (ImGui::Begin("Nextino"))
+    if (Begin())
     {
         if (Reddog::Button("Fetch Object List"))
         {
@@ -127,7 +123,6 @@ void TestWindow::Draw()
         {
             GuestToHostFunction<int>(sub_8253ADB8, TestWindow::GamemodeActor, 0);
         }
-    }
-    ImGui::PopFont();
-    ImGui::End();
+    }    
+    End();
 }

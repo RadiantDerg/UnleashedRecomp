@@ -8,6 +8,8 @@
 #include <res/images/reddog/common_button_2.dds.h>
 
 constexpr float BUTTON_SIZE = 32.0f;
+//Fix for xarialuni
+constexpr float GLYPH_OFFSET = -2;
 constexpr float CHECKBOX_SIZE = 16.0f;
 
 static std::unique_ptr<GuestTexture> g_upCheckbox1;
@@ -77,7 +79,7 @@ bool Reddog::Button(const char* label)
     window->DrawList->AddImage(texture, { rect.Min.x + uvSize, rect.Max.y - uvSize }, { rect.Max.x - uvSize, rect.Max.y }, GET_UV_COORDS(bc));
     window->DrawList->AddImage(texture, { rect.Max.x - uvSize, rect.Max.y - uvSize }, rect.Max, GET_UV_COORDS(br));
 
-    float textOffset = isHeld && isPressed ? 1.0f : 0.0f;
+    float textOffset = isHeld && isPressed ? 1.0f : 0.0f + GLYPH_OFFSET;
 
     if (label && label[0] != '\0')
         ImGui::RenderText({ textOffset + rect.Min.x + (size.x - labelSize.x) * 0.5f, textOffset + rect.Min.y + (size.y - labelSize.y) * 0.5f }, label);

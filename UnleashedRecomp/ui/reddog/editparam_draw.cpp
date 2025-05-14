@@ -1,37 +1,9 @@
 #include <api/SWA.h>
 #include "editparam_draw.h"
-class CParamBool : public SWA::CParamBase
-{
-public:
-    be<bool> m_FieldIdk;
-    be<bool> m_FieldIdk2;
-    SWA_INSERT_PADDING(0x20);
-    Hedgehog::Base::CSharedString m_Field30;
-    bool* GetParamBool()
-    {
-        return (bool*)m_pVariable.get();
-    };
-};
-template<typename T>
-class CParamValue : public SWA::CParamBase
-{
-public:
-    class FuncData
-    {
-    public:
-        xpointer<T> ptr;
-        T float4;
-        T current;
-        T max;
-        T defaultval;
-        T float14;
-    };
-    SWA_INSERT_PADDING(0x4);
-    FuncData m_pFuncData;
-    Hedgehog::Base::CSharedString m_Field30;
-};
-SWA_ASSERT_OFFSETOF(CParamValue<int>, m_pFuncData, 0x10);
-//SWA_ASSERT_OFFSETOF(CParamValue<int>, m_Field30, 0x38);
+#include "reddog_controls.h"
+
+
+
 void Reddog::CEditParamDraw::DrawEditParam(const boost::shared_ptr<SWA::CEditParam>& in_EditParam)
 {
     if (in_EditParam.get() == nullptr)
@@ -43,36 +15,77 @@ void Reddog::CEditParamDraw::DrawEditParam(const boost::shared_ptr<SWA::CEditPar
         {
         case BOOL:
         {
-            CParamBool* param = (CParamBool*)prmList2.get();
-            auto test = param->m_FieldIdk;
-            ImGui::Checkbox(param->m_Name.c_str(), param->GetParamBool());
+            SWA::CParamBool* pParam = (SWA::CParamBool*)prmList2.get();
+            Reddog::Checkbox(pParam->m_Name.c_str(), pParam->GetParamBool());
             //ImGui::SameLine();
             //ImGui::Checkbox(param->m_Name.c_str(), &param->m_FieldIdk2);
-            ImGui::SetItemTooltip(Reddog::CEditParamDraw::GetString(param->m_Field30.c_str()).c_str());
+            ImGui::SetItemTooltip(Reddog::CEditParamDraw::GetString(pParam->m_Field30.c_str()).c_str());
             break;
         }
         case FLOAT:
         {
-            CParamValue<be<float>>* param = (CParamValue<be<float>>*)prmList2.get();
-            float value = param->m_pFuncData.ptr->get();
-            ImGui::DragFloat(param->m_Name.c_str(), &value);
-            *param->m_pFuncData.ptr = value;
+            SWA::CParamValue<be<float>>* pParam = (SWA::CParamValue<be<float>>*)prmList2.get();
+            float value = pParam->m_pFuncData.ptr->get();
+            char buf[128];
+            sprintf(buf, "%s [%.2f - %.2f]", pParam->m_Name.c_str(), pParam->m_pFuncData.m_Minimum.get(), pParam->m_pFuncData.m_Maximum.get());
+            ImGui::DragFloat(buf, &value);
+            *pParam->m_pFuncData.ptr = value;
+            if(pParam->m_Field30.get() != nullptr)
+                ImGui::SetItemTooltip(Reddog::CEditParamDraw::GetString(pParam->m_Field30.c_str()).c_str());
             break;
         }
         case LONG:
         {
-            CParamValue<be<long>>* param = (CParamValue<be<long>>*)prmList2.get();
-            float value = param->m_pFuncData.ptr->get();
-            ImGui::InputScalar(param->m_Name.c_str(), ImGuiDataType_S64, &value);
-            *param->m_pFuncData.ptr = value;
+            SWA::CParamValue<be<long>>* pParam = (SWA::CParamValue<be<long>>*)prmList2.get();
+            //This might not be a good idea, but using inputscalar gave huge numbers
+            int value = pParam->m_pFuncData.ptr->get();
+            ImGui::InputInt(pParam->m_Name.c_str(), &value);
+            *pParam->m_pFuncData.ptr = value;
             break;
         }
         case ULONG:
         {
-            CParamValue<be<unsigned long>>* param = (CParamValue<be<unsigned long>>*)prmList2.get();
-            float value = param->m_pFuncData.ptr->get();
-            ImGui::InputScalar(param->m_Name.c_str(), ImGuiDataType_U64, &value);
-            *param->m_pFuncData.ptr = value;
+            SWA::CParamValue<be<unsigned long>>* pParam = (SWA::CParamValue<be<unsigned long>>*)prmList2.get();
+            //This might not be a good idea, but using inputscalar gave huge numbers
+            uint32_t value = pParam->m_pFuncData.ptr->get();
+            ImGui::InputScalar(pParam->m_Name.c_str(), ImGuiDataType_U32, &value);
+            *pParam->m_pFuncData.ptr = value;
+            break;
+        }
+        case INT:
+        {
+            SWA::CParamValue<be<int>>* pParam = (SWA::CParamValue<be<int>>*)prmList2.get();
+            int value = pParam->m_pFuncData.ptr->get();
+            ImGui::InputInt(pParam->m_Name.c_str(), &value);
+            *pParam->m_pFuncData.ptr = value;
+            break;
+        }
+        case TYPE_LIST:
+        {
+            SWA::CParamTypeList* pParam = (SWA::CParamTypeList*)prmList2.get();
+            SWA::CParamTypeList::CMember* member = pParam->GetMember();
+            auto values = pParam->GetMember()->m_ValueMap;
+            auto ptr = member->m_Field50.get();
+            if (ImGui::BeginCombo(pParam->m_Name.c_str(), GetString(member->m_ValueMap.at((int)*member->m_Field50).c_str()).c_str()))
+            {
+                for (auto& a : member->m_ValueMap)
+                {
+                    if (!ImGui::Selectable(GetString(a.second.c_str()).c_str()))
+                        continue;
+
+                    *member->m_Field50 = a.first;
+                    member->m_Field54 = a.first;
+                    member->m_Field58 = a.first;
+                    //pParam->ApplyValue();
+                }
+
+                ImGui::EndCombo();
+            };
+            for (auto& val : values)
+            {
+                auto valname = val.second.c_str();
+                printf("");
+            }
             break;
         }
         default:
