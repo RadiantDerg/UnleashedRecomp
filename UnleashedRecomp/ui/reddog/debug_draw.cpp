@@ -70,7 +70,7 @@ namespace Reddog
             Vector4 cameraPos = camera.m_View * worldPos;
             Vector4 clipPos = camera.m_Projection * cameraPos;
 
-            if (clipPos.w <= 0.0f)
+            if (clipPos.w <= -0.1f)
                 return { -1, -1 };
 
             clipPos.x /= clipPos.w;
@@ -78,8 +78,8 @@ namespace Reddog
 
             float screenX = (clipPos.x * 0.5f + 0.5f) * res.x; float screenY = (clipPos.y * -0.5f + 0.5f) * res.y;
 
-            if (screenX < 0 || screenX > res.x || screenY < 0 || screenY > res.y)
-                return { -1, -1 };
+            /*if (screenX < 0 || screenX > res.x || screenY < 0 || screenY > res.y)
+                return { -1, -1 };*/
 
             return { screenX, screenY };
         }
@@ -93,7 +93,10 @@ namespace Reddog
     void Exec_DrawLines(ImDrawList* drawList, ImVec2 canvasSize, float delta)
     {
         if (DebugDraw::ms_LineList.empty())
+        {
+            std::vector<SDrawLine>().swap(DebugDraw::ms_LineList);
             return;
+        }
 
         for (auto line : DebugDraw::ms_LineList)
         {
@@ -115,7 +118,10 @@ namespace Reddog
     void Exec_DrawScreenText(ImDrawList* drawList, ImVec2 canvasSize, float delta, ImFont* font)
     {
         if (DebugDraw::ms_FreeTextList.empty())
+        {
+            std::vector<SDrawText>().swap(DebugDraw::ms_FreeTextList);
             return;
+        }
 
         auto fontSize = Scale(12.0f);
 
@@ -149,7 +155,10 @@ namespace Reddog
     void Exec_DrawLogText(ImDrawList* drawList, ImVec2 canvasSize, float delta, ImFont* font)
     {
         if (DebugDraw::ms_LogTextList.empty())
+        {
+            std::vector<SDrawText>().swap(DebugDraw::ms_LogTextList);
             return;
+        }
 
         constexpr ImGuiWindowFlags flags{ 0
             | ImGuiWindowFlags_NoTitleBar
@@ -250,7 +259,9 @@ namespace Reddog
             ms_LineList.size(), ms_FreeTextList.size(), ms_LogTextList.size(), sizeof(SDrawLine) * ms_LineList.capacity(),
             sizeof(SDrawText) * ms_FreeTextList.capacity() + sizeof(SDrawText) * ms_LogTextList.capacity());
         SDrawText text = { ImVec2(Scale(40), Scale(75)), stats, 0, 0.75f };
-        DrawText2D(text);
+
+        if (!ms_LineList.empty() || !ms_FreeTextList.empty() || !ms_LogTextList.empty())
+            DrawText2D(text);
 
         ms_IsRendering = true;
 

@@ -29,7 +29,7 @@ void Reddog::CEditParamDraw::DrawEditParam(const boost::shared_ptr<SWA::CEditPar
             sprintf(buf, "%s [%.2f - %.2f]", pParam->m_Name.c_str(), pParam->m_pFuncData.m_Minimum.get(), pParam->m_pFuncData.m_Maximum.get());
             Reddog::InputFloat(buf, &value);
             *pParam->m_pFuncData.ptr = value;
-            if(pParam->m_Field30.get() != nullptr)
+            if(pParam->m_Field30.get() != nullptr && (int)pParam->m_Field30.get() > 300000000) // Incredibly hacky crash fix.
                 ImGui::SetItemTooltip(Reddog::CEditParamDraw::GetString(pParam->m_Field30.c_str()).c_str());
             break;
         }
