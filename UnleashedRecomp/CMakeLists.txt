@@ -511,6 +511,7 @@ BIN2C(TARGET_OBJ UnleashedRecomp SOURCE_FILE "${RESOURCES_SOURCE_PATH}/images/re
 BIN2C(TARGET_OBJ UnleashedRecomp SOURCE_FILE "${RESOURCES_SOURCE_PATH}/images/reddog/mouse_cursor_slant_r.bmp" DEST_FILE "${RESOURCES_OUTPUT_PATH}/images/reddog/mouse_cursor_slant_r.bmp" ARRAY_NAME "g_mouse_cursor_slant_r")
 BIN2C(TARGET_OBJ UnleashedRecomp SOURCE_FILE "${RESOURCES_SOURCE_PATH}/images/reddog/mouse_cursor_v.bmp" DEST_FILE "${RESOURCES_OUTPUT_PATH}/images/reddog/mouse_cursor_v.bmp" ARRAY_NAME "g_mouse_cursor_v")
 BIN2C(TARGET_OBJ UnleashedRecomp SOURCE_FILE "${RESOURCES_SOURCE_PATH}/images/reddog/title_bar.dds" DEST_FILE "${RESOURCES_OUTPUT_PATH}/images/reddog/title_bar.dds" ARRAY_NAME "g_title_bar")
+BIN2C(TARGET_OBJ UnleashedRecomp SOURCE_FILE "${RESOURCES_SOURCE_PATH}/images/reddog/input.dds" DEST_FILE "${RESOURCES_OUTPUT_PATH}/images/reddog/input.dds" ARRAY_NAME "g_input")
 
 ## Installer ##
 BIN2C(TARGET_OBJ UnleashedRecomp SOURCE_FILE "${RESOURCES_SOURCE_PATH}/images/installer/arrow_circle.dds" DEST_FILE "${RESOURCES_OUTPUT_PATH}/images/installer/arrow_circle.dds" ARRAY_NAME "g_arrow_circle" COMPRESSION_TYPE "zstd")

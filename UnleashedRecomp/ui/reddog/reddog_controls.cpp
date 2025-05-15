@@ -4,6 +4,7 @@
 
 #include <res/images/reddog/checkbox_1.dds.h>
 #include <res/images/reddog/checkbox_2.dds.h>
+#include <res/images/reddog/input.dds.h>
 #include <res/images/reddog/common_button_1.dds.h>
 #include <res/images/reddog/common_button_2.dds.h>
 
@@ -11,14 +12,17 @@ constexpr float BUTTON_SIZE = 32.0f;
 //Fix for xarialuni
 constexpr float GLYPH_OFFSET = -2;
 constexpr float CHECKBOX_SIZE = 16.0f;
+constexpr float INPUT_SIZE = 32.0f;
 
 static std::unique_ptr<GuestTexture> g_upCheckbox1;
+static std::unique_ptr<GuestTexture> g_inputbox;
 static std::unique_ptr<GuestTexture> g_upCheckbox2;
 static std::unique_ptr<GuestTexture> g_upCommonButton1;
 static std::unique_ptr<GuestTexture> g_upCommonButton2;
 
 void Reddog::InitControlsResources()
 {
+    g_inputbox = LoadTexture(g_input, sizeof(g_input));
     g_upCheckbox1 = LoadTexture(g_checkbox_1, sizeof(g_checkbox_1));
     g_upCheckbox2 = LoadTexture(g_checkbox_2, sizeof(g_checkbox_2));
     g_upCommonButton1 = LoadTexture(g_common_button_1, sizeof(g_common_button_1));
@@ -87,6 +91,60 @@ bool Reddog::Button(const char* label)
     return isPressed;
 }
 
+bool Reddog::InputInt(const char* label, int* v)
+{
+    return Reddog::InputScalar(label, ImGuiDataType_S32, v);
+}
+bool Reddog::InputFloat(const char* label, float* v)
+{
+    return Reddog::InputScalar(label, ImGuiDataType_Float, v);
+}
+bool Reddog::InputScalar(const char* label, ImGuiDataType type, void* data)
+{
+    auto window = ImGui::GetCurrentWindow();
+
+    if (window->SkipItems)
+        return false;
+
+    auto& ctx = *GImGui;
+    auto& style = ctx.Style;
+    auto id = window->GetID(label);
+    auto labelSize = ImGui::CalcTextSize(label, nullptr, true);
+    auto pos = window->DC.CursorPos;
+
+    ImVec2 size = { INPUT_SIZE * 2, CHECKBOX_SIZE };
+    ImRect testRect(pos, { pos.x + size.x, pos.y + size.y });
+    ImRect totalRect(pos, { pos.x + size.x + (labelSize.x > 0.0f ? style.ItemInnerSpacing.x + labelSize.x : 0.0f), pos.y + size.y });
+
+    ImGui::ItemSize(totalRect, style.FramePadding.y);
+
+    if (!ImGui::ItemAdd(totalRect, id))
+        return false;
+
+    bool isHovered, isHeld;
+
+
+    auto texture = g_inputbox.get();
+
+    window->DrawList->AddImage(texture, testRect.Min, testRect.Max);
+
+    ImGui::PushID(id);
+    ImGui::SetNextItemWidth(size.x);
+    ImGui::SetCursorScreenPos({ pos.x, pos.y + GLYPH_OFFSET });
+    //Render input as transparent
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(0, 0, 0, 0));
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, IM_COL32(0, 0, 0, 0));
+    ImGui::PushStyleColor(ImGuiCol_FrameBgActive, IM_COL32(0, 0, 0, 0));
+    bool isPressed = ImGui::InputScalar("##",type, data);
+    ImGui::PopStyleColor(3);
+    ImGui::PopID();
+
+
+    if (labelSize.x > 0.0f)
+        ImGui::RenderText({ testRect.Max.x + style.ItemInnerSpacing.x, testRect.Min.y + style.FramePadding.y + GLYPH_OFFSET }, label);
+
+    return isPressed;
+}
 bool Reddog::Checkbox(const char* label, bool* v)
 {
     auto window = ImGui::GetCurrentWindow();
