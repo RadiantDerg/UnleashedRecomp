@@ -2,10 +2,10 @@
 
 #include <ui/reddog/reddog_window.h>
 
-class ParamEditorWindowTest : public Reddog::Window
+class ParameterEditorWindow : public Reddog::Window
 {
 public:
-    ParamEditorWindowTest() : Window()
+    ParameterEditorWindow() : Window()
     {
         Name = "Parameter Editor";
         Flags = Reddog::eWindowFlags_None;

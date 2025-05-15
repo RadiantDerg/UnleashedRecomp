@@ -1,4 +1,4 @@
-#include "ParamEditorWindowTest.h"
+#include "parameter_editor.h"
 #include <ui/reddog/reddog_controls.h>
 #include <user/config.h>
 #include <SWA.h>
@@ -6,7 +6,7 @@
 #include <gpu/imgui/imgui_snapshot.h>
 
 
-static ParamEditorWindowTest g_window;
+static ParameterEditorWindow g_window;
 
 
 
@@ -17,7 +17,7 @@ const char* GetTextAccurate(const SWA::CAbstractParameter* param)
 {
     return m_AcUseJapanese ? param->m_DisplayName.c_str() : param->m_Name.c_str();
 }
-void ParamEditorWindowTest::Draw()
+void ParameterEditorWindow::Draw()
 {
     if (SWA::CGameDocument2::GetInstance() != nullptr)
     {

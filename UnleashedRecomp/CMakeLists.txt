@@ -159,7 +159,7 @@ set(UNLEASHED_RECOMP_UI_CXX_SOURCES
     "ui/reddog/windows/memory_inspector_window.cpp"
     "ui/reddog/windows/view_window.cpp"
     "ui/reddog/windows/welcome_window.cpp"
-    "ui/reddog/windows/ParamEditorWindowTest.cpp"
+    "ui/reddog/windows/parameter_editor.cpp"
     "ui/reddog/windows/TestWindow.cpp"
 
     "ui/achievement_menu.cpp"
