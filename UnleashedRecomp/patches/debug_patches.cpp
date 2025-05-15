@@ -5,7 +5,8 @@
 #include <ui/imgui_utils.h>
 #include <patches/aspect_ratio_patches.h>
 #include <patches/debug_patches.h>
-#include "ui/reddog/windows/TestWindow.h"
+#include <ui/reddog/windows/TestWindow.h>
+#include <ui/reddog/windows/sequence_menu.h>
 
 
 // TODO: Move elsewhere
@@ -281,13 +282,14 @@ PPC_FUNC(sub_8278EB30)
     __imp__sub_8278EB30(ctx, base);
 }
 
-#pragma pack(push, 1)
-struct CSetEditor {
-    uint8_t pad275[0x12C];
-    uint32_t* dword12C;
-};
-#pragma pack(pop)
-SWA_ASSERT_OFFSETOF(CSetEditor, dword12C, 0x12c);
+//Store sequence menu logs into window
+PPC_FUNC_IMPL(__imp__sub_82B66A48);
+PPC_FUNC(sub_82B66A48)
+{
+    auto text = (Hedgehog::Base::CSharedString*)g_memory.Translate(ctx.r4.u32);
+    SequenceMenu::sequenceLogs.push_back(text->c_str());
+    __imp__sub_82B66A48(ctx, base);
+}
 
 //PPC_FUNC_IMPL(__imp__sub_82E01730);
 //PPC_FUNC(sub_82E01730)

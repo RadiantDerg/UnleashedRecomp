@@ -123,6 +123,10 @@ void TestWindow::Draw()
         {
             GuestToHostFunction<int>(sub_8253ADB8, TestWindow::GamemodeActor, 0);
         }
+        if (Reddog::Button("Inspire"))
+        {
+            GuestToHostFunction<int>(sub_8253B290, TestWindow::GamemodeActor, 0);
+        }
     }    
     End();
 }
