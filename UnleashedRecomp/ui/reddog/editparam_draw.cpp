@@ -2,12 +2,11 @@
 #include "editparam_draw.h"
 #include "reddog_controls.h"
 
-
-
 void Reddog::CEditParamDraw::DrawEditParam(const boost::shared_ptr<SWA::CEditParam>& in_EditParam)
 {
     if (in_EditParam.get() == nullptr)
         return;
+
     for (const auto& prmList2 : in_EditParam->m_ParamList)
     {
         EParamType type = (EParamType)(*reinterpret_cast<be<uint32_t>*>(prmList2.get())).get();
@@ -28,7 +27,7 @@ void Reddog::CEditParamDraw::DrawEditParam(const boost::shared_ptr<SWA::CEditPar
             float value = pParam->m_pFuncData.ptr->get();
             char buf[128];
             sprintf(buf, "%s [%.2f - %.2f]", pParam->m_Name.c_str(), pParam->m_pFuncData.m_Minimum.get(), pParam->m_pFuncData.m_Maximum.get());
-            ImGui::DragFloat(buf, &value);
+            Reddog::InputFloat(buf, &value);
             *pParam->m_pFuncData.ptr = value;
             if(pParam->m_Field30.get() != nullptr)
                 ImGui::SetItemTooltip(Reddog::CEditParamDraw::GetString(pParam->m_Field30.c_str()).c_str());
@@ -39,7 +38,7 @@ void Reddog::CEditParamDraw::DrawEditParam(const boost::shared_ptr<SWA::CEditPar
             SWA::CParamValue<be<long>>* pParam = (SWA::CParamValue<be<long>>*)prmList2.get();
             //This might not be a good idea, but using inputscalar gave huge numbers
             int value = pParam->m_pFuncData.ptr->get();
-            ImGui::InputInt(pParam->m_Name.c_str(), &value);
+            Reddog::InputInt(pParam->m_Name.c_str(), &value);
             *pParam->m_pFuncData.ptr = value;
             break;
         }
@@ -48,7 +47,7 @@ void Reddog::CEditParamDraw::DrawEditParam(const boost::shared_ptr<SWA::CEditPar
             SWA::CParamValue<be<unsigned long>>* pParam = (SWA::CParamValue<be<unsigned long>>*)prmList2.get();
             //This might not be a good idea, but using inputscalar gave huge numbers
             uint32_t value = pParam->m_pFuncData.ptr->get();
-            ImGui::InputScalar(pParam->m_Name.c_str(), ImGuiDataType_U32, &value);
+            Reddog::InputScalar(pParam->m_Name.c_str(), ImGuiDataType_U32, &value);
             *pParam->m_pFuncData.ptr = value;
             break;
         }
@@ -56,7 +55,7 @@ void Reddog::CEditParamDraw::DrawEditParam(const boost::shared_ptr<SWA::CEditPar
         {
             SWA::CParamValue<be<int>>* pParam = (SWA::CParamValue<be<int>>*)prmList2.get();
             int value = pParam->m_pFuncData.ptr->get();
-            ImGui::InputInt(pParam->m_Name.c_str(), &value);
+            Reddog::InputInt(pParam->m_Name.c_str(), &value);
             *pParam->m_pFuncData.ptr = value;
             break;
         }

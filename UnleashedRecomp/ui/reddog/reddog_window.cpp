@@ -374,6 +374,9 @@ bool Reddog::Window::Begin(bool* pIsVisible)
     if ((Flags & eWindowFlags_NoResize) != 0)
         flags |= ImGuiWindowFlags_NoResize;
 
+    if ((Flags & eWindowFlags_NoMove) != 0)
+        flags |= ImGuiWindowFlags_NoMove;
+
     if (m_preBegin)
         m_preBegin();
 

@@ -19,7 +19,8 @@ namespace Reddog
         eWindowFlags_NoTitleBar = 1 << 0,
         eWindowFlags_NoResize = 1 << 1,
         eWindowFlags_NoListEntry = 1 << 2,
-        eWindowFlags_Center = 1 << 3
+        eWindowFlags_Center = 1 << 3,
+        eWindowFlags_NoMove = 1 << 4
     };
 
     class IWindow

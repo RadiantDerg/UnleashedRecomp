@@ -44,6 +44,9 @@ void ExportsWindow::Draw()
         Reddog::Checkbox("Show FPS", &Config::ShowFPS.Value);
         Reddog::Checkbox("Show Console", &Config::ShowConsole.Value);
         Reddog::Checkbox("Disable Low Resolution Font On Custom UI", &Config::DisableLowResolutionFontOnCustomUI.Value);
+
+        ImGui::SeparatorText("DebugMenu");
+        Reddog::Checkbox("Preview Build style menus", &Config::PreviewBuildControls.Value);
     }
     End();
 }

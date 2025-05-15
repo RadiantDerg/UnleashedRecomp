@@ -95,5 +95,6 @@ CONFIG_DEFINE_HIDDEN("Codes", bool, SaveScoreAtCheckpoints, false);
 CONFIG_DEFINE_HIDDEN("Codes", bool, SkipIntroLogos, false);
 CONFIG_DEFINE_HIDDEN("Codes", bool, UseArrowsForTimeOfDayTransition, false);
 CONFIG_DEFINE_HIDDEN("Codes", bool, UseOfficialTitleOnTitleBar, false);
+CONFIG_DEFINE_HIDDEN("DebugMenu", bool, PreviewBuildControls, false);
 
 CONFIG_DEFINE("Update", time_t, LastChecked, 0);
