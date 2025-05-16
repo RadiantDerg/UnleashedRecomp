@@ -25,6 +25,7 @@ inline char* UTF16BE_to_Cstr(const wchar_t* text)
 
     thread_local char fmtMultiByte[1024];
     WideCharToMultiByte(CP_UTF8, 0, reinterpret_cast<const wchar_t*>(charBuffer.data()), -1, fmtMultiByte, sizeof(fmtMultiByte), 0, 0);
+    std::vector<uint16_t>().swap(charBuffer);
     return fmtMultiByte;
 }
 
@@ -89,26 +90,34 @@ PPC_FUNC(sub_822CC300)
 
     Reddog::DebugDraw::DrawText2D(drawText);
 
-    __imp__sub_822CC300(ctx, base);
+    //__imp__sub_822CC300(ctx, base);
 }
 
 // SWA::CDebugDrawText::DrawDebugText2 @ 0x822CC0D8
 PPC_FUNC_IMPL(__imp__sub_822CC0D8);
 PPC_FUNC(sub_822CC0D8)
 {
-    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r8.u32)), 6);
+    Reddog::DebugDraw::DrawTextLog(UTF16BE_to_Cstr((const wchar_t*)g_memory.Translate(ctx.r8.u32)), 5);
 
-    __imp__sub_822CC0D8(ctx, base);
+    //__imp__sub_822CC0D8(ctx, base);
 }
 
 // ::GetIsDebugRenderForGameObject()
 PPC_FUNC_IMPL(__imp__sub_82512BF8);
 PPC_FUNC(sub_82512BF8)
 {
+    const auto hack = (uint8_t*)g_memory.Translate(0x8202F7AC);
+
     if (DebugPatches::ms_IsForceGameObjectDebugRender)
+    {
+        *hack = 0x30;
         ctx.r3.u8 = 1; // Always return true
+    }
     else
+    {
+        *hack = 0x36;
         __imp__sub_82512BF8(ctx, base);
+    }
 }
 
 // boost::~::SWA::CDebugDraw::CMember::SDrawLine
@@ -128,7 +137,7 @@ PPC_FUNC(sub_822C9398)
 
     Reddog::DebugDraw::DrawLine(line);
 
-    __imp__sub_822C9398(ctx, base);
+    //__imp__sub_822C9398(ctx, base);
 }
 
 
@@ -288,6 +297,7 @@ PPC_FUNC(sub_82B66A48)
 {
     auto text = (Hedgehog::Base::CSharedString*)g_memory.Translate(ctx.r4.u32);
     SequenceMenu::sequenceLogs.push_back(text->c_str());
+    Reddog::DebugDraw::DrawTextLog(text->c_str(), 4);
     __imp__sub_82B66A48(ctx, base);
 }
 

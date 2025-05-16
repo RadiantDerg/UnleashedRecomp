@@ -184,20 +184,24 @@ namespace Reddog
             if (useColor)
                 ImGui::PushStyleColor(ImGuiCol_Text, logText->Colour);
 
-            ImGui::TextUnformatted(logText->Text.c_str());
+            ImGui::TextUnformatted(logText++->Text.c_str());
 
             if (useColor)
                 ImGui::PopStyleColor();
 
-            // Decrement timer
-            logText->Time -= delta;
+            if (logText != DebugDraw::ms_LogTextList.end())
+                ImGui::Separator();
+        }
 
+        for (auto logText = DebugDraw::ms_LogTextList.begin(); logText != DebugDraw::ms_LogTextList.end();)
+        {
             // Remove if expired
             if (logText->Time < 0.0f)
                 logText = DebugDraw::ms_LogTextList.erase(logText);
 
-            if (logText != DebugDraw::ms_LogTextList.end())
-                ImGui::Separator();
+            // Decrement timer
+            else 
+                logText++->Time -= delta; 
         }
 
         ImGui::SetWindowPos({ canvasSize.x - Scale(2) - ImGui::GetWindowSize().x, Scale(2) });
