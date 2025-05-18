@@ -301,6 +301,44 @@ PPC_FUNC(sub_82B66A48)
     __imp__sub_82B66A48(ctx, base);
 }
 
+// Criware message handler
+PPC_FUNC_IMPL(__imp__sub_831683E0);
+PPC_FUNC(sub_831683E0)
+{
+    //HOOK(void, __cdecl, CriMessage, 0x7C92DE, int ErrType, const char* Msg, int OptArg1, int OptArg2, int OptArg3) // Gens'11 version
+
+    // Run original func (needed in this use case)
+    __imp__sub_831683E0(ctx, base);
+
+    int ErrType = ctx.r3.u8;
+    auto text = (const char*)g_memory.Translate(ctx.r4.u32);
+    //auto a3 = ctx.r5.u32;
+    auto a3 = (const char*)g_memory.Translate(ctx.r5.u32);
+    auto a4 = ctx.r6.u32;
+    auto a5 = ctx.r7.u32;
+
+    auto MsgFix = std::string(text);
+    size_t result = 0;
+
+    // Fix message format syntax
+    result = MsgFix.find("%s");
+    if (result != std::basic_string<char>::npos)
+        MsgFix.replace(result, 2, "{}");
+
+    result = MsgFix.find("%d");
+    if (result != std::basic_string<char>::npos)
+        MsgFix.replace(result, 2, "{:d}");
+
+    std::string(fmt::format(fmt::runtime(MsgFix), a3, a4, a5)).swap(MsgFix);
+    
+    // Log Error
+    if (ErrType == 0)
+        Reddog::DebugDraw::DrawTextLog(MsgFix.c_str(), 2.5f, ImColor(1.0f, 0.2f, 0.2f, 1.0f));
+    // Log Warning
+    else if (!Config::SilenceCriWarnings && ErrType == 1)
+        Reddog::DebugDraw::DrawTextLog(MsgFix.c_str(), 1.5f, ImColor(1.0f, 0.8f, 0.0f, 1.0f));
+}
+
 //PPC_FUNC_IMPL(__imp__sub_82E01730);
 //PPC_FUNC(sub_82E01730)
 //{

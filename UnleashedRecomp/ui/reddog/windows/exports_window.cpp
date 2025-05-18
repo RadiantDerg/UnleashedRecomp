@@ -47,6 +47,7 @@ void ExportsWindow::Draw()
 
         ImGui::SeparatorText("DebugMenu");
         Reddog::Checkbox("Preview Build style menus", &Config::PreviewBuildControls.Value);
+        Reddog::Checkbox("Suppress Criware Warnings", &Config::SilenceCriWarnings.Value);
     }
     End();
 }
