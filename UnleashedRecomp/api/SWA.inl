@@ -6,6 +6,9 @@
 #define SWA_CONCAT2(x, y) x##y
 #define SWA_CONCAT(x, y) SWA_CONCAT2(x, y)
 
+#define SWA_OVERRIDE_VIRTUAL(obj, index, value) \
+    ((xpointer<be<uint32_t>>)((xpointer<be<uint32_t>>*)obj)[0])[index] = be<uint32_t>(value)
+
 #define SWA_INSERT_PADDING(length) \
     uint8_t SWA_CONCAT(pad, __LINE__)[length]
 

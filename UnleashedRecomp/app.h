@@ -12,6 +12,7 @@ public:
     static inline bool s_isWerehog;
     static inline bool s_isSaveDataCorrupt;
 
+    static inline void* g_MultiWerehogPtr;
     static inline ELanguage s_language;
 
     static inline double s_deltaTime;

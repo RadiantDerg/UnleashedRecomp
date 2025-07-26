@@ -242,7 +242,9 @@ endif()
 set_source_files_properties(${UNLEASHED_RECOMP_THIRDPARTY_SOURCES} PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 
 set(UNLEASHED_RECOMP_CXX_SOURCES
+    "ClientInfo.cpp"
     "NetworkMan.cpp"
+    "ObjNetworkSonic.cpp"
     "app.cpp"
     "exports.cpp"
     "main.cpp"

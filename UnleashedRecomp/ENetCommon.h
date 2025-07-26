@@ -112,10 +112,10 @@ public:
 		ret.w /= c2.w;
 		return ret;
 	}
-#if BBM_CLIENT
-	operator hh::math::CVector4() const { return hh::math::CVector4(x, y, z, w); }
-	operator hh::math::CVector() const { return hh::math::CVector(x, y, z); }
-#endif
+//#if BBM_CLIENT
+	operator Hedgehog::Math::CVector4() const { return Hedgehog::Math::CVector4(x, y, z, w); }
+	operator Hedgehog::Math::CVector() const { return Hedgehog::Math::CVector(x, y, z); }
+//#endif
 };
 #define SERIALIZE_BASE_PACKET() memcpy(buffer + offset, &type, sizeof(type)); \
 offset += sizeof(type); \
