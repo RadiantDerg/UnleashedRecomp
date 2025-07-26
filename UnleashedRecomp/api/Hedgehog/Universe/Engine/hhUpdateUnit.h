@@ -12,7 +12,10 @@ namespace Hedgehog::Universe
         SWA_INSERT_PADDING(0x20);
 
         CUpdateUnit(const swa_null_ctor& nil) : CObject(nil), IParallelJob(nil) {}
-        CUpdateUnit();
+        CUpdateUnit()
+        {
+            GuestToHostFunction<void*>(sub_82E5F288, this);
+        };
 
         // TODO: implement virtual functions.
         // virtual ~CUpdateUnit();

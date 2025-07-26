@@ -10,5 +10,9 @@ namespace Hedgehog::Universe
     {
     public:
         SWA_INSERT_PADDING(0x88);
+        CMessageActor()
+        {
+            GuestToHostFunction<void*>(sub_82E61F28, this);
+        }
     };
 }

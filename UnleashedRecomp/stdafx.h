@@ -1,7 +1,7 @@
 #pragma once
 
 #define NOMINMAX
-
+#include <enet/enet.h>
 #if defined(_WIN32)
 #include <windows.h>
 #include <ShlObj_core.h>

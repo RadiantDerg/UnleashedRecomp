@@ -118,8 +118,9 @@ namespace boost
         shared_ptr() : px(), pn() {}
 
         // TODO
-        explicit shared_ptr(T* p) = delete;
-
+        explicit shared_ptr(T* p) : px(p), pn()
+        {
+        }
         shared_ptr(const shared_ptr& other) : px(other.px), pn(other.pn)
         {
             add_ref();

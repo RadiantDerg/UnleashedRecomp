@@ -218,6 +218,7 @@ set(UNLEASHED_RECOMP_THIRDPARTY_SOURCES
 )
 
 set(UNLEASHED_RECOMP_THIRDPARTY_INCLUDES
+    "${UNLEASHED_RECOMP_THIRDPARTY_ROOT}/enet/include"
     "${UNLEASHED_RECOMP_THIRDPARTY_ROOT}/concurrentqueue"
     "${UNLEASHED_RECOMP_THIRDPARTY_ROOT}/ddspp"
     "${UNLEASHED_RECOMP_THIRDPARTY_ROOT}/imgui"
@@ -241,6 +242,7 @@ endif()
 set_source_files_properties(${UNLEASHED_RECOMP_THIRDPARTY_SOURCES} PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 
 set(UNLEASHED_RECOMP_CXX_SOURCES
+    "NetworkMan.cpp"
     "app.cpp"
     "exports.cpp"
     "main.cpp"
@@ -360,6 +362,7 @@ file(CHMOD ${DIRECTX_DXC_TOOL} PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
 
 if (WIN32)
     target_link_libraries(UnleashedRecomp PRIVATE
+    enet
         comctl32
         dwmapi
         ntdll

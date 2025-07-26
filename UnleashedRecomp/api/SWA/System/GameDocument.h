@@ -4,6 +4,10 @@ namespace Hedgehog::Database
 {
     class CDatabase;
 }
+namespace Hedgehog::Universe
+{
+    class CUpdateManager;
+}
 
 namespace SWA
 {
@@ -51,7 +55,8 @@ namespace SWA
                 SWA_INSERT_PADDING(0x10);
             };
 
-            SWA_INSERT_PADDING(0xC);
+            SWA_INSERT_PADDING(0x4);
+            boost::shared_ptr< Hedgehog::Universe::CUpdateManager> m_spUpdateManager;
             hh::map<Hedgehog::Base::CSharedString, boost::shared_ptr<CWorld2>> m_Worlds;
             SWA_INSERT_PADDING(0x1C-0xC-0xC);
             boost::shared_ptr<Hedgehog::Database::CDatabase> m_spDatabase;
@@ -70,7 +75,8 @@ namespace SWA
         // TODO: Hedgehog::Base::TSynchronizedPtr<CGameDocument>
         static CGameDocument* GetInstance();
         void AddGameObject(const guest_stack_var<boost::shared_ptr<CGameObject>>& in_spGameObject, const guest_stack_var<Hedgehog::Base::CSharedString>& in_WorldName);
-
+        void AddUpdateUnit(const Hedgehog::Base::CSharedString& in_rCategory,
+            Hedgehog::Universe::CUpdateUnit* in_pUpdateUnit);
         xpointer<void> m_pVftable;
         xpointer<CMember> m_pMember;
     };
