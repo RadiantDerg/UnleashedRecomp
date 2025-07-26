@@ -24,7 +24,7 @@ namespace SWA
         GuestToHostFunction<void>(sub_8250F238, worldHolder.get(), this, worldName.get()); // get holder
         GuestToHostFunction<void>(sub_82510D20, this, worldHolder.get(), in_spGameObject.get(), 0); // add game object
     }
-    inline void CGameDocument::AddUpdateUnit(const Hedgehog::Base::CSharedString& in_rCategory, Hedgehog::Universe::CUpdateUnit* in_pUpdateUnit)
+    inline void CGameDocument::AddUpdateUnit(const char* in_rCategory, Hedgehog::Universe::CUpdateUnit* in_pUpdateUnit)
     {
         guest_stack_var<Hedgehog::Base::CSharedString> worldName(in_rCategory);
         GuestToHostFunction<void>(sub_8250C338, this, worldName.get(), in_pUpdateUnit);

@@ -168,6 +168,10 @@ struct ArgTranslator
         {
             SetIntegerArgumentValue(ctx, base, idx, g_memory.MapVirtual(value));
         }
+        else if constexpr (std::is_reference_v<T>)
+        {
+            SetIntegerArgumentValue(ctx, base, idx, g_memory.MapVirtual(&value));
+        }
         else
         {
             SetIntegerArgumentValue(ctx, base, idx, value);

@@ -75,7 +75,7 @@ namespace SWA
         // TODO: Hedgehog::Base::TSynchronizedPtr<CGameDocument>
         static CGameDocument* GetInstance();
         void AddGameObject(const guest_stack_var<boost::shared_ptr<CGameObject>>& in_spGameObject, const guest_stack_var<Hedgehog::Base::CSharedString>& in_WorldName);
-        void AddUpdateUnit(const Hedgehog::Base::CSharedString& in_rCategory,
+        void AddUpdateUnit(const char* in_rCategory,
             Hedgehog::Universe::CUpdateUnit* in_pUpdateUnit);
         xpointer<void> m_pVftable;
         xpointer<CMember> m_pMember;

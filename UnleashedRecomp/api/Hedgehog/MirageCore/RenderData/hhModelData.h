@@ -28,6 +28,8 @@ namespace Hedgehog::Mirage
         boost::shared_ptr<CAabbData> m_spAabb;
         boost::shared_ptr<CSphereData> m_spSphere;
         hh::vector<boost::shared_ptr<CMorphModelData>> m_MorphModels;
+        CModelData(const swa_null_ctor&) {};
+        CModelData() {};
     };
 
     SWA_ASSERT_OFFSETOF(CModelData, m_NodeGroupModelNum, 0xC);
