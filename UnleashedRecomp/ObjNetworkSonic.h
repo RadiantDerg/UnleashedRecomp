@@ -26,45 +26,7 @@ namespace SWA
     SWA_ASSERT_OFFSETOF(CGameObject3D, m_spMatrixNodeTransform, 0xC4);
 }
 
-class CMirageDatabaseWrapper : public Hedgehog::Base::CObject
-{
-public:
-    SWA_INSERT_PADDING(0x8);
-    CMirageDatabaseWrapper(Hedgehog::Database::CDatabase* in_pDatabase)
-    {
-        GuestToHostFunction<void*>(sub_82E5E6C8, this, in_pDatabase);
-        //GuestToHostFunction<void*>(sub_82E5E6C8, this, in_pDatabase->get());
-    }
-    boost::shared_ptr<Hedgehog::Mirage::CModelData>* GetModelData(const Hedgehog::Base::CSharedString& in_rName)
-    {
-        guest_stack_var<boost::shared_ptr< Hedgehog::Mirage::CModelData>> model;
-        guest_stack_var<Hedgehog::Base::CSharedString> modelName(in_rName);
-        ////MirageDtabaseWrapper
-        //GuestToHostFunction<void*>(sub_82E5E6C8, test2, spDatabase->get());
 
-        //GetModelData
-        GuestToHostFunction<void*>(sub_82E37318, model.get(), this, modelName.get(), 0);
-
-        return model.get();
-    }
-};
-class CSingleElement : public Hedgehog::Mirage::CRenderable
-{
-public:
-    //wrong
-    SWA_INSERT_PADDING(0x90);
-
-
-    CSingleElement(boost::shared_ptr<Hedgehog::Mirage::CModelData>* spModelData)
-    {
-        GuestToHostFunction<void*>(sub_82E1F820, this, spModelData);
-    }
-    void BindMatrixNode(const boost::shared_ptr < SWA::CMatrixNodeTransform>& in_spMatrixNode)
-    {
-        GuestToHostFunction<void*>(sub_82E1E100, this, &in_spMatrixNode);
-    }
-};
-SWA_ASSERT_SIZEOF(CSingleElement, 0x98u);
 class CObjNetworkSonic : public SWA::CGameObject3D
 {
 public:
@@ -75,34 +37,16 @@ public:
     {
         Reddog::DebugDraw::DrawTextLog("AddCallback", 0);
 
-        guest_stack_var<boost::shared_ptr< Hedgehog::Mirage::CModelData>> model;
         int playerType = net::NetManager::GetClientFromId(This->clientID)->GetPlayerType();
-        //guest_stack_var<Hedgehog::Base::CSharedString> modelName(playerType == 0 ? "SonicRoot" : "EvilRoot");
 
-        CMirageDatabaseWrapper* test2 = new CMirageDatabaseWrapper(spDatabase->get());
-        ////MirageDtabaseWrapper
-        //GuestToHostFunction<void*>(sub_82E5E6C8, test2, spDatabase->get());
-
-        ;
-        //GetModelData
-        //GuestToHostFunction<void*>(sub_82E37318, model.get(), test2, modelName.get(), 0);
-
-        //SingleElement ctor
-        auto singleElement = new CSingleElement(test2->GetModelData(playerType == 0 ? "SonicRoot" : "EvilRoot"));
-        //GuestToHostFunction<void*>(sub_82E1F820, singleElement, model.get());
-        guest_stack_var<boost::shared_ptr<CSingleElement>> singleElementPtr(singleElement);
-
+        Hedgehog::Mirage::CMirageDatabaseWrapper* test2 = new Hedgehog::Mirage::CMirageDatabaseWrapper(spDatabase->get());
+        auto singleElement = new Hedgehog::Mirage::CSingleElement(test2->GetModelData(playerType == 0 ? "SonicRoot" : "EvilRoot"));
         singleElement->BindMatrixNode(This->m_spMatrixNodeTransform);
-        //Bind
-        //GuestToHostFunction<void*>(sub_82E1E100, singleElement, &This->m_spMatrixNodeTransform);
-
+        guest_stack_var<boost::shared_ptr<Hedgehog::Mirage::CSingleElement>> singleElementPtr(singleElement);
+       
         SWA::CGameDocument::GetInstance()->AddUpdateUnit("0", This);
-
-        //AddRenderable
-        GuestToHostFunction<void*>(sub_82514360, This, ((be<uint32_t>*)g_memory.Translate(0x8336795C))->get(), singleElementPtr.get(), 1);
-
+        SWA::CGameObject::AddRenderable(This, 0x8336795C, singleElementPtr.get(), true);
         SWA::CGameObject3D::AddCallback(This, a2, pGameDocument, spDatabase);
-        //GuestToHostFunction<void>(sub_82515338, This, a2, pGameDocument, spDatabase);
     };
     static void UpdateParallel(CObjNetworkSonic* This)
     {
