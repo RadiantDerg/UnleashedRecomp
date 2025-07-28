@@ -35,9 +35,9 @@ namespace SWA
         {
             GuestToHostFunction<void*>(sub_82514A50, this);
         };
-        static void AddRenderable(SWA::CGameObject* This, int in_SymbolAddress, boost::shared_ptr<Hedgehog::Mirage::CSingleElement>* in_SingleElement, bool in_CastShadows = 1)
+        static void AddRenderable(SWA::CGameObject* This, uint32_t in_SymbolAddress, boost::shared_ptr<Hedgehog::Mirage::CSingleElement>* in_SingleElement, bool in_CastShadows = 1)
         {
-            GuestToHostFunction<void*>(sub_82514360, This, ((be<uint32_t>*)g_memory.Translate(0x8336795C))->get(), in_SingleElement, in_CastShadows ? 1 : 0);
+            GuestToHostFunction<void*>(sub_82514360, This, ((be<uint32_t>*)g_memory.Translate(in_SymbolAddress))->get(), in_SingleElement, in_CastShadows ? 1 : 0);
         }
         xpointer<Vftable> m_pVftable2;
         xpointer<CMember> m_pMember;

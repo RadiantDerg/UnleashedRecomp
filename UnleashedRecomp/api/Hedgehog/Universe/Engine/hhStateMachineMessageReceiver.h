@@ -7,6 +7,7 @@ namespace Hedgehog::Universe
     class IStateMachineMessageReceiver
     {
     public:
+        IStateMachineMessageReceiver() {}
         IStateMachineMessageReceiver(const swa_null_ctor&) {}
     };
 }

@@ -28,10 +28,21 @@ namespace Hedgehog::Universe
             T* GetContextBase() const;
 
         };
-        boost::shared_ptr<CStateBase> ChangeState(Base::CSharedString in_Name, const int in_Priority = 0, const float in_Time = 0, const bool in_Flag = false);
+        CStateMachineBase()
+        {
+            GuestToHostFunction<void>(sub_82E668C8, this);
+        }
+        CStateMachineBase(const swa_null_ctor& nil)
+        {
+            GuestToHostFunction<void>(sub_82E668C8, this);
+        }
+        SWA_INSERT_PADDING(0xC + 0xC);
+        xpointer<void> m_pContext;
+        boost::shared_ptr<CStateBase>* ChangeState(Base::CSharedString in_Name, const int in_Priority = 0, const float in_Time = 0, const bool in_Flag = false);
 
         SWA_INSERT_PADDING(0x60);
     };
+    SWA_ASSERT_OFFSETOF(CStateMachineBase, m_pContext, 0x1C);
 
 
 }

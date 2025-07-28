@@ -276,6 +276,34 @@ PPC_FUNC(sub_82302D10)
     UpdateNetwork(ctx, base, 0);
     __imp__sub_82302D10(ctx, base);
 }
+//class CGoalHud
+//{
+//public:
+//    struct CContext
+//    {
+//        struct HudField
+//        {
+//            SWA_INSERT_PADDING(52);
+//            be<float> Time;
+//        };
+//        SWA_INSERT_PADDING(300);
+//        xpointer<HudField> HudField;
+//    };
+//    SWA_INSERT_PADDING(8);
+//    xpointer< CContext> Context;
+//};
+//SWA_ASSERT_OFFSETOF(CGoalHud, Context, 8);
+//SWA_ASSERT_OFFSETOF(CGoalHud::CContext, HudField, 300);
+////CPlayerSpeed update
+//PPC_FUNC_IMPL(__imp__sub_824A1170);
+//PPC_FUNC(sub_824A1170)
+//{
+//    __imp__sub_824A1170(ctx, base);
+//    auto ptr = (CGoalHud*)g_memory.Translate(ctx.r3.u32);
+//    auto time = ptr->Context->HudField->Time;
+//    float float2 = *reinterpret_cast<float*>(PPC_LOAD_U32(PPC_LOAD_U32(ctx.r3.u32 + 300) + 52));
+//    //net::NetManager::SendPacketStageEnd(SWA::CGameDocument::GetInstance()->m_pMember->m_StageName.c_str(), );
+//}
 
 
 // SWA::CApplication::Update
@@ -342,25 +370,7 @@ PPC_FUNC(sub_822C1130)
 
     if (Config::EnableStageCollisionDebugView)
         *SWA::SGlobals::ms_IsCollisionRender = true;
-    auto player = SWA::Player::CPlayerSpeedContext::GetInstance();
-    if (player)
-    {
-        
-        
-    }
-    //if (GetAsyncKeyState(VK_F7))
-    //{
-    //    auto obj = boost::make_shared<CObjNetworkSonic>();
-    //
-    //    boost::shared_ptr<SWA::CGameObject> barPtr(reinterpret_cast<SWA::CGameObject*>(obj.get()));
-    //
-    //    guest_stack_var<Hedgehog::Base::CSharedString> worldName("main");
-    //    guest_stack_var<Hedgehog::Base::THolder<SWA::CWorld>, false> worldHolder;
-    //    guest_stack_var<boost::shared_ptr<CObjNetworkSonic>> boost(obj);
-    //    GuestToHostFunction<void>(sub_8250F238, worldHolder.get(), SWA::CGameDocument::GetInstance(), worldName.get()); // get holder
-    //    GuestToHostFunction<void>(sub_82510D20, SWA::CGameDocument::GetInstance(), worldHolder.get(), boost.get(), 0); // add game object
-    //    //GuestToHostFunction<int>(sub_82510D20, SWA::CGameDocument2::GetInstance(), in_pText);
-    //}
+
     __imp__sub_822C1130(ctx, base);
 }
 
