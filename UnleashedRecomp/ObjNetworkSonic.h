@@ -98,10 +98,10 @@ namespace Hedgehog::Animation
         }
     };
 }
-class IAnimationContext
+class IAnimationContext : public Hedgehog::Base::CObject
 {
 public:
-    struct Vftable
+    struct Vftable : public Hedgehog::Base::CObject
     {
         be<uint32_t> GetAnimationPose;
         be<uint32_t> GetVelocityForAnimationSpeed;
@@ -150,8 +150,15 @@ public:
         GuestToHostFunction<void>(sub_82300F40, spAnimationState.get(), this, name.get(), name.get());
         return spAnimationState.get();
     }
+    boost::anonymous_shared_ptr* AddAnimationStateBlend(const Hedgehog::Base::CSharedString& in_rName)
+    {
+        guest_stack_var<boost::anonymous_shared_ptr> spAnimationState;
+        guest_stack_var<Hedgehog::Base::CSharedString> name(in_rName);
+        GuestToHostFunction<void>(sub_82300F40, spAnimationState.get(), this, name.get(), name.get());
+        return spAnimationState.get();
+    }
 };
-class CObjNetworkSonic : public SWA::CGameObject3D
+class CObjNetworkSonic : public SWA::CGameObject3D, public IAnimationContext
 {
 public:
     uint32_t clientID = -1;
@@ -160,7 +167,6 @@ public:
     CAnimationStateMachine* m_AnimationStateMachine;
     boost::shared_ptr < Hedgehog::Animation::CAnimationPose> m_AnimatorPose;
     Hedgehog::Mirage::CSingleElement* singleElement;
-    IAnimationContext* context; 
     Hedgehog::Math::CVector vec;
     void RegisterAnimations(Hedgehog::Animation::CAnimationPose* animPose, Hedgehog::Mirage::CSingleElement* model, CAnimationStateMachine* stateMachine)
     {
@@ -195,14 +201,9 @@ public:
         //guest_stack_var<Hedgehog::Base::CSharedString> name("SonicRoot");
         //auto test3 = (Hedgehog::Animation::CAnimationPose*)__HH_ALLOC(0x154);
         This->m_AnimationStateMachine = new CAnimationStateMachine();
-        This->context = (IAnimationContext*)__HH_ALLOC(0x16 + 0x10);
-        This->context->m_pVftable3 = (IAnimationContext::Vftable*)__HH_ALLOC(0x10);
-        SWA_OVERRIDE_VIRTUAL(This->context, 0, (PPC_CODE_BASE + PPC_CODE_SIZE + (20 * 4)) + 8);
-        SWA_OVERRIDE_VIRTUAL(This->context, 1, (PPC_CODE_BASE + PPC_CODE_SIZE + (20 * 4)) + 12);
-        SWA_OVERRIDE_VIRTUAL(This->context, 2, (PPC_CODE_BASE + PPC_CODE_SIZE + (20 * 4)) + 16);
         
-        This->context->vec = Hedgehog::Math::CVector(1, 1, 1);
-        This->m_AnimationStateMachine->m_pContext = This->context;
+        //This->context->vec = Hedgehog::Math::CVector(1, 1, 1);
+        This->m_AnimationStateMachine->m_pContext = static_cast<IAnimationContext*>(This);
 
         This->m_AnimatorPose = boost::make_shared<Hedgehog::Animation::CAnimationPose>(This, spDatabase, playerType == 0 ? "SonicRoot" : "EvilRoot");
         //This->singleElement->BindPose(&This->m_AnimatorPose);
@@ -213,6 +214,7 @@ public:
         //auto test = animationStateMachine->GetContext();
 
         guest_stack_var<boost::anonymous_shared_ptr> testatatata(This->m_AnimatorPose.get());
+        //This is bindpose
         GuestToHostFunction<void*>(sub_82E1DF80, This->singleElement, testatatata.get());
         //guest_stack_var<boost::shared_ptr<Hedgehog::Animation::CPose>> test(animPose);
         for (size_t i = 0; i < 10; i++)
@@ -222,36 +224,38 @@ public:
         This->m_AnimatorPose->CreateAnimationCache();
         guest_stack_var<boost::shared_ptr<Hedgehog::Mirage::CSingleElement>> singleElementPtr(This->singleElement);
 
-        This->context->poseTEMPRONG = This->m_AnimatorPose.get();
-        This->m_AnimationStateMachine->ChangeStateAlt("Walk");
+        //This->context->poseTEMPRONG = This->m_AnimatorPose.get();
+        This->m_AnimationStateMachine->ChangeStateAlt("Stand");
         SWA::CGameDocument::GetInstance()->AddUpdateUnit("0", This);
         SWA::CGameObject::AddRenderable(This, 0x83367940, singleElementPtr.get(), true);
     };
     static void UpdateParallel(CObjNetworkSonic* This, Hedgehog::Universe::SUpdateInfo* in_rUpdateInfo)
     {
+        //go update
+        GuestToHostFunction<void>(sub_82514010, This);
         //auto e = net::NetManager::GetClientFromId(This->clientID);
         guest_stack_var<Hedgehog::Math::CVector> vec(This->m_Pos);
         guest_stack_var<Hedgehog::Math::CQuaternion> vec2(This->m_Rot);
         GuestToHostFunction<void>(sub_825153E0, This, vec.get());
         GuestToHostFunction<void>(sub_82515450, This, vec2.get());
 
-        This->context->poseTEMPRONG = This->m_AnimatorPose.get();
-        This->m_AnimationStateMachine->ChangeStateAlt("Stand");
+        //This->context->poseTEMPRONG = This->m_AnimatorPose.get();
+        //This->m_AnimationStateMachine->ChangeStateAlt("Stand");
         This->m_AnimationStateMachine->Update(in_rUpdateInfo);
         This->m_AnimatorPose->Update(in_rUpdateInfo);
         Reddog::DebugDraw::DrawTextLog("Update", 0);
     };
     static Hedgehog::Animation::CAnimationPose* GetAnimationPose(IAnimationContext* This)
     {
-        return This->poseTEMPRONG;
+        return static_cast<CObjNetworkSonic*>(This)->m_AnimatorPose.get();
     };
     static Hedgehog::Math::CVector* Test55(IAnimationContext* This)
     {
-        return &This->vec;
+        return &static_cast<CObjNetworkSonic*>(This)->vec;
     }; 
     static Hedgehog::Math::CVector* Test56(IAnimationContext* This)
     {
-        return &This->vec;
+        return &static_cast<CObjNetworkSonic*>(This)->vec;
     };
     void Kill()
     {
@@ -294,5 +298,9 @@ public:
         //((xpointer<be<uint32_t>>)((xpointer<be<uint32_t>>*)this)[offset])[2] = be<uint32_t>(functionOffset + 16);
         SWA_OVERRIDE_VIRTUAL(this, 5, functionOffset);
         SWA_OVERRIDE_VIRTUAL(this, 3, functionOffset + 4);
+
+        SWA_OVERRIDE_VIRTUAL(static_cast<IAnimationContext*>(this), 0, functionOffset + 8);
+        SWA_OVERRIDE_VIRTUAL(static_cast<IAnimationContext*>(this), 1, functionOffset + 12);
+        SWA_OVERRIDE_VIRTUAL(static_cast<IAnimationContext*>(this), 2, functionOffset + 16);
     };
 };

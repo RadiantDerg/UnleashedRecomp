@@ -313,7 +313,7 @@ PPC_FUNC(sub_822C1130)
     if (GetAsyncKeyState(VK_F6))
     {
         net::NetManager::Initialize();
-        if (net::NetManager::Connect("HKRY (in Unleashed)", "147.185.221.17", 6888) == 0)
+        if (net::NetManager::Connect("HKRY (in Unleashed)", "127.0.0.1", 7777) == 0)
         {
             Reddog::DebugDraw::DrawTextLog("Connection success", 10);
         }
